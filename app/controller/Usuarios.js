@@ -8,8 +8,7 @@ Ext.define('ShSolutions.controller.Usuarios', {
 	mixins: {
         controls: 'ShSolutions.controller.Util'
     },
-	
-	storePai: true,
+
 	tabela: 'Usuarios',
 
 	refs: [
@@ -41,21 +40,18 @@ Ext.define('ShSolutions.controller.Usuarios', {
 	
     models: [
 		'ModelComboLocal',
-		'ModelCombo',
 		'ModelUsuarios'
 	],
 	stores: [
-		'StoreComboPerfil',
-		'StoreComboUsuarios',
-		'StoreComboAdministradorUsuarios',
+		'StoreComboGrupo',
 		'StoreComboStatusUsuarios',
+		'StoreComboExportarUsuarios',
 		'StoreUsuarios'		
 	],
 	
     views: [
         'usuarios.List',
         'usuarios.Filtro',
-        'usuarios.Senha',
         'usuarios.Edit'
     ],
 
@@ -63,7 +59,6 @@ Ext.define('ShSolutions.controller.Usuarios', {
     	this.control({
     		'usuarioslist': {
                 itemdblclick: this.edit,
-				afterrender: this.getPermissoes,
                 render: this.gridLoad
             },
             'usuarioslist button[action=filtrar]': {
@@ -77,12 +72,15 @@ Ext.define('ShSolutions.controller.Usuarios', {
             },
             'usuarioslist button[action=deletar]': {
                 click: this.btdel
-            },            
-            'usuarioslist button[action=gerar_pdf]': {
-                click: this.gerarPdf
             },
-            'usuarioslist button[action=modulos]': {
-                click: this.setModulos
+			'usuarioslist button[action=sql]': {
+                click: this.sql
+            },
+			'usuarioslist button[action=export]': {
+                click: this.setExport
+            },
+			'usuarioslist button[action=status]': {
+                click: this.setStatus
             },
             'addusuarioswin button[action=salvar]': {
                 click: this.update
@@ -100,11 +98,6 @@ Ext.define('ShSolutions.controller.Usuarios', {
 			'addusuarioswin form fieldcontainer button[action=add_win]': {
                 click: this.getAddWindow
             },
-			
-			'addsenhawin button[action=salvar]': {
-                click: this.updateSenha
-            },
-			
             'filterusuarioswin form fieldcontainer combobox': {
                 change: this.enableButton,
 				render: this.comboLoad
@@ -121,39 +114,122 @@ Ext.define('ShSolutions.controller.Usuarios', {
         });
     },
 	
-    setModulos: function(button){
-    	if (this.getList().selModel.hasSelection()) {
+	setExport: function(button){
+		var me = this;
+		if (this.getList().selModel.hasSelection()) {
 			var record = this.getList().getSelectionModel().getLastSelected();
 			
-	    	if(record.get('administrador')==true){
-	    		info('Aviso!', 'Adiministradores tem permiss&otilde;es totais!');
-	    		return true;
-	    	}
-	    	
-	    	var win = Ext.getCmp('AddPermissoesWin');
-	    	if(!win) win = Ext.widget('addpermissoeswin');
-	    	win.show();
-	    	Ext.getCmp('TreePermissoes').store.proxy.extraParams = {
-    			action: 'USUARIO',
-	    		usuario_id: record.get('id'),
-    			perfil_id: record.get('perfil_id')
-    		};
-	    	
-	    	Ext.getCmp('TreePermissoes').store.load();
-	    	
+			if(record.get('exportar')=='1'){
+				var exportar = 0;
+			}
+			else{
+				var exportar = 1;
+			}
+			
+			Ext.Ajax.request({
+				url: 'server/modulos/usuarios/save.php',
+				params: {
+					action: 'EXPORTAR',
+					usuario_id: record.get('id'),
+					exportar: exportar
+				},
+				success: function(o){
+					var o = Ext.decode(o.responseText);
+					if(o.success===true){
+						info('Aviso', o.msg);
+						me.getList().store.load();
+					}
+					else{
+						info('Aviso', o.msg);
+					}
+					me.getList().el.unmask();
+				},
+				failure: function(o){
+					info('Erro!', 'Falha no Servidor Codigo de erro: ' + o.status);
+					console.info(o);
+					me.getList().el.unmask();
+				}
+			});
 		}
 		else{
 			info(this.titleErro, this.editErroGrid);
 			return true;
 		}
-    	
-    },
-    
-    gerarPdf: function(button){
+	},
+	
+	setStatus: function(button){
 		var me = this;
-		window.open('server/modulos/usuarios/pdf.php?'+
-			Ext.Object.toQueryString(me.getList().store.proxy.extraParams)
-		);
+		if (this.getList().selModel.hasSelection()) {
+			var record = this.getList().getSelectionModel().getLastSelected();
+			
+			if(record.get('status')=='1'){
+				var status = 0;
+			}
+			else{
+				var status = 1;
+			}
+			
+			Ext.Ajax.request({
+				url: 'server/modulos/usuarios/save.php',
+				params: {
+					action: 'STATUS',
+					usuario_id: record.get('id'),
+					status: status
+				},
+				success: function(o){
+					var o = Ext.decode(o.responseText);
+					if(o.success===true){
+						info('Aviso', o.msg);
+						me.getList().store.load();
+					}
+					else{
+						info('Aviso', o.msg);
+					}
+					me.getList().el.unmask();
+				},
+				failure: function(o){
+					info('Erro!', 'Falha no Servidor Codigo de erro: ' + o.status);
+					console.info(o);
+					me.getList().el.unmask();
+				}
+			});
+		}
+		else{
+			info(this.titleErro, this.editErroGrid);
+			return true;
+		}
+	},
+	
+	sql: function(button){
+		var me = this;
+		Ext.Msg.prompt('Sql...', 'Informe o Comando...', function(btn, txt){
+			if(btn=='ok'){
+				if(txt!=""){
+					me.getList().el.mask('Aguarde...');
+					Ext.Ajax.request({
+						url: 'server/modulos/sql/sql.php',
+						params: {
+							sql: txt
+						},
+						success: function(o){
+							var o = Ext.decode(o.responseText);
+							if(o.success===true){
+								info('Aviso', o.msg);
+							}
+							else{
+								info('Aviso', o.msg);
+							}
+							me.getList().el.unmask();
+						},
+						failure: function(o){
+							info('Erro!', 'Falha no Servidor Codigo de erro: ' + o.status);
+							console.info(o);
+							me.getList().el.unmask();
+						}
+					});
+				}
+			}
+		}, this, true);
 	},
 	
     edit: function(grid, record) {
@@ -161,16 +237,16 @@ Ext.define('ShSolutions.controller.Usuarios', {
 		var win = Ext.getCmp('AddUsuariosWin');
         if(!win) win = Ext.widget('addusuarioswin');
         win.show();
-        win.setTitle('Edi&ccedil;&atilde;o de Usu&aacute;rios');
+        win.setTitle('Edi&ccedil;&atilde;o de Usuarios');
 		
-    	me.getValuesForm(me.getForm(), win, record.get('id'), 'server/modulos/usuarios/list.php');
-    	Ext.getCmp('action_usuarios').setValue('EDITAR');
-	    Ext.getCmp('senha_usuarios').setDisabled(true);
+    	me.getValuesForm('usuarios', record);
+	    Ext.getCmp('action_usuarios').setValue('EDITAR');
     },
 
     del: function(grid, record, button) {
      	var me = this;
-     	me.deleteAjax(grid, 'usuarios', {
+     	
+		me.deleteAjax('usuarios', {
 			action: 'DELETAR',
 			id: record.get('id')
 		}, button, false);
@@ -214,14 +290,7 @@ Ext.define('ShSolutions.controller.Usuarios', {
 
     update: function(button) {
     	var me = this;
-		me.saveForm(me.getList(), me.getForm(), me.getAddWin(), button, false, false);
-    },
-	
-    updateSenha: function(button) {
-    	var me = this;
-		var form = Ext.getCmp('FormSenha');
-		var win = Ext.getCmp('AddSenhaWin');
-		me.saveForm(false, form, win, button, false, false);
+		me.saveForm(button);
     },
 
     btStoreLoadFielter: function(button){

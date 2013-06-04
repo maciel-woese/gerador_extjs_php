@@ -16,20 +16,9 @@ Ext.define('ShSolutions.model.ModelUsuarios', {
 			type: 'string'
 		},				
 		{
-			name: 'perfil',								 
-			type: 'string'
-		},				
-		{
-			name: 'perfil_id',								 
-			type: 'int'
-		},				
-		{
-			name: 'filial',								 
-			type: 'string'
-		},				
-		{
-			name: 'filial_id',								 
-			type: 'int'
+			name: 'data_cadastro',			
+			dateFormat: 'Y-m-d',					 
+			type: 'date'
 		},				
 		{
 			name: 'email',								 
@@ -40,15 +29,19 @@ Ext.define('ShSolutions.model.ModelUsuarios', {
 			type: 'string'
 		},				
 		{
-			name: 'senha',								 
+			name: 'grupo',								 
 			type: 'string'
 		},				
 		{
-			name: 'administrador',								 
-			type: 'string'
+			name: 'id_grupo',								 
+			type: 'int'
 		},				
 		{
 			name: 'status',								 
+			type: 'string'
+		},				
+		{
+			name: 'exportar',								 
 			type: 'string'
 		}				
     ]

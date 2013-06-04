@@ -3,64 +3,115 @@ Ext.define('ShSolutions.controller.Util', {
         observable: 'Ext.util.Observable'
     },
 	
+	chartTitle: 'Numero de Apps Geradas',
+	version_principal: 'Adiquira a Vers&atilde;o Principal para Exportar! <br> Entre em Contato: macielcr7@gmail.com',
+	
+	information_ls: '1 <b>Lista:</b> Lista de M&oacute;dulos em formato de Lista <b>(padr&atilde;o)</b>.<br>'+
+					'2 <b>&Iacute;cone:</b> Lista de M&oacute;dulos em formato de &Iacute;cones <b>(Desktop)</b>.',
+			
+	information_pu: '<b>Sim</b> para Gerar <br> 1 - Autentica&ccedil;&atilde;o de Usu&aacute;rios <br>2 - '+ 
+					'Permiss&otilde;es de M&oacute;dulos. <br><br> Ser&aacute; Preciso <b>Inserir Algumas Tabelas na Base</b>,'+
+					'<br> Que est&aacute; no arquivo <b>Sql.sql</b> na raiz do Sistema',
+					
+	load_prepare_app: 'Aguarde.. Preparando App Gerada...',
+	require_modulos: '&Eacute; Necess&aacute;rio Adicionar alguns M&oacute;dulos no Banco!',
+	error_no: "Erro Inesperado!",
+	
+	generate_app: 'Gerando App...',
+	prepare_dados: "Preparando Dados...",
+	error_tabela: 'Erro na tabela',
+	no_table_ref: ' est&aacute; faltando a ref. Tabela!',
+	no_value_ref: ' est&aacute; faltando a ref. Valor!',
+	no_label_ref: ' est&aacute; faltando a ref. Label!',
+	require_gerar_crud: '&Eacute; Preciso Selecionar os Registros para gerar Crud!',
+	no_sync: 'N&atilde;o Existe o Arquivo de Sicroniza&ccedil;&atilde;o no Servidor!',
+	
     titleErro: 'Erro!',
-    avisoText: 'Aviso!',
+    avisoText: 'Aviso',
+    falhaServer: 'Falha no Servidor Codigo de erro: ',
+    exportarText: 'Selecione um Registro para Exportar!',
+	
     saveFormText: 'Aguarde...',
     delGridText: 'Deletando, Aguarde...',
     delErroGrid: 'Selecione um Registro para Deletar!',
     editErroGrid: 'Selecione um Registro para Editar!',
-    editPDFText: 'Selecione um Registro para Gerar PDF!',
     loadingGridText: 'Aguarde Carregando Dados...',
     filteredText: 'Filtrar <span class="buttonFilter">*</span>',
     filterText: 'Filtrar',
     connectFalhaText: 'Comunica&ccedil;&atilde;o Ajax Perdida',
-    server_failure: 'Falha no Servidor Codigo de erro: ',
-    fieldsInvalidText: 'Campos com valores invalidos',
-    requiredsFieldsText: 'Existem campos obrigatorios...',
-	
-	clearInterval: false,
-	storePai: false,
+    fieldsInvalidText: 'Campos com valores inv&aacute;lidos',
+    requiredsFieldsText: 'Existem campos em Branco...',
+    
 	disabledCombo: 0,
+	clearInterval: false,
 	
-  	
-	getPermissoes: function(){
-		var me = this;
-		var data = this.application.dados[this.tabela.toLowerCase()];
-		var items = me.getList().down('toolbar').items.items;
-
-		Ext.each(items, function(p){
-			Ext.each(data, function(j){
-				if(p.action && p.action==j.acao){
-					p.setVisible(true);
-				}
-			});
-		});
+	gridLoad: function(comp){
+		if(!comp.loadDisabled){
+			setTimeout(function(){
+				comp.store.load();
+			},10);
+		}
 	},
-  	
-	getStoresDependes: function(){
-    	var me = this;
-		if(me.storePai==true){
-			me.getStore('StoreCombo'+me.id).load();
-		}
-    },
 	
-	verifyCombo: function(comp, callbackParse, form){
+	comboLoad: function(comp){
+		if(!comp.loadDisabled){
+			if(comp.store.getCount()==0){
+				comp.store.load();
+			}
+		}
+	},
+	
+	resetCombo: function(button){
+		var id = button.combo_id;
+		Ext.getCmp(id).reset();
+		button.setVisible(false);
+	},
+	
+	enableButton: function(comp){
+		var id = comp.button_id;
+		if(comp.getValue()!=null){
+			Ext.getCmp(id).setVisible(true);
+		}
+		else{
+			Ext.getCmp(id).setVisible(false);
+		}
+	},
+	
+	verifyCombo: function(comp, callbackParse){
 		var me = this;
-		if(form){
-			var form = form; 
-		}
-		else if(me.getForm()){
-			var form = me.getForm(); 
-		}
-		else if(me.getFilterForm()){
-			var form = me.getFilterForm(); 
-		}
 		var callback = Ext.emptyFn;
 		if(comp.xtype=='combobox'){
 			if(me.disabledCombo==0){
-				form.el.mask(me.saveFormText);
+				me.getForm().el.mask('Aguarde...');
 				setTimeout(function(){
-					form.el.mask(me.saveFormText);
+					me.getForm().el.mask('Aguarde...');
+				},10);
+			}
+			me.disabledCombo++;
+			callback = function(){
+				me.disabledCombo--;
+				if(me.disabledCombo==0){
+					if(me.getForm()){
+						me.getForm().el.unmask();
+						
+						if(typeof callbackParse == 'function'){
+							callbackParse();
+						}
+					}
+				}
+			}
+		}
+		return callback;
+	},
+	
+	verifyComboCustom: function(form, comp, callbackParse){
+		var me = this;
+		var callback = Ext.emptyFn;
+		if(comp.xtype=='combobox'){
+			if(me.disabledCombo==0){
+				form.el.mask('Aguarde...');
+				setTimeout(function(){
+					form.el.mask('Aguarde...');
 				},10);
 			}
 			me.disabledCombo++;
@@ -80,43 +131,160 @@ Ext.define('ShSolutions.controller.Util', {
 		return callback;
 	},
 	
-	processInterval: function(callback, combobox){
-		if(combobox){
-			this.clearInterval = setInterval(function(){
-				if(typeof callback === 'function'){
+	getValuesForm: function(tabela, record, callback, combobox){
+		var me = this;
+		window.rec = record;
+		me.getForm().el.mask('Aguarde...');
+		if(!combobox){
+			me.getForm().getForm().setValues(record.data);
+			me.getForm().el.unmask();
+			if(typeof callback == 'function'){
+				callback();
+			}
+			return true;
+		}
+		
+		me.clearInterval = setInterval(function(){
+			if(me.disabledCombo==0){
+				me.getForm().getForm().setValues(record.data);
+				me.getForm().el.unmask();
+				if(typeof callback == 'function'){
 					callback();
 				}
-			},1000);
-		}
-		else{
-			callback();
+				clearInterval(me.clearInterval);
+				return true;
+			}
+		},1000);
+		
+		if(me.disabledCombo==0){
+			me.getForm().getForm().setValues(record.data);
+			me.getForm().el.unmask();
+			if(typeof callback == 'function'){
+				callback();
+			}
+			clearInterval(me.clearInterval);
+			return true;
 		}
 	},
 	
-	saveForm: function(grid, form, win, button, callbackSuccess, callbackFailure){
+	getValuesFormCustom: function(form, record, callback, combobox){
 		var me = this;
+		form.el.mask('Aguarde...');
+		if(!combobox){
+			if(record!=false){
+				form.getForm().setValues(record.data);
+			}
+			form.el.unmask();
+			if(typeof callback == 'function'){
+				callback();
+			}
+			return true;
+		}
 		
-		if(form.getForm().isValid()){
-			form.el.mask(me.saveFormText);
+		me.clearInterval = setInterval(function(){
+			if(me.disabledCombo==0){
+				if(record!=false){
+					form.getForm().setValues(record.data);
+				}
+				form.el.unmask();
+				if(typeof callback == 'function'){
+					callback();
+				}
+				clearInterval(me.clearInterval);
+				return true;
+			}
+			else{
+				clearInterval(me.clearInterval);
+			}
+		},1000);
+		
+		if(me.disabledCombo==0){
+			if(record!=false){
+				form.getForm().setValues(record.data);
+			}
+			form.el.unmask();
+			if(typeof callback == 'function'){
+				callback();
+			}
+			clearInterval(me.clearInterval);
+			return true;
+		}
+		else{
+			clearInterval(me.clearInterval);
+		}
+	},
+	
+	saveForm: function(button, callbackSuccess, callbackFailure){
+		var me = this;
+		if(me.getForm().getForm().isValid()){
 			button.setDisabled(true);
+			me.getForm().el.mask('Aguarde...');
+			me.getForm().getForm().submit({
+				success: function(f, o){
+					button.setDisabled(false);
+					me.getForm().el.unmask();
+					if(o.result){
+						if(o.result.success==true){
+							info('Aviso!', o.result.msg);
+							
+							if(typeof me.getList == 'function'){
+								if(me.getList() && !me.getList().loadDisabled){
+									me.getList().store.load();
+								}
+							}
+							
+							if(typeof callbackSuccess == 'function'){
+								callbackSuccess(o.result);
+							}
+							me.getAddWin().close();
+							
+						}
+					}
+				},
+				failure: function(f, action){
+					switch (action.failureType) {
+						case Ext.form.action.Action.CLIENT_INVALID:
+							info('Falha', 'Campos com valores inv&aacute;lidos');
+							break;
+						case Ext.form.action.Action.CONNECT_FAILURE:
+							info('Falha', 'Comunicação Ajax Perdida');
+							break;
+						case Ext.form.action.Action.SERVER_INVALID:
+						   info('Falha', action.result.msg);
+				    }
+					me.getForm().el.unmask();
+					button.setDisabled(false);
+				    if(typeof callbackFailure == 'function'){
+						callbackFailure();
+					}
+				}
+			});
+		}
+		else{
+			info('Erro!', 'Existem campos obrigat&oacute;rios...');
+		}
+	},
+	
+	saveFormCustom: function(form, grid, win, button, callbackSuccess){
+		var me = this;
+		if(form.getForm().isValid()){
+			button.setDisabled(true);
+			form.el.mask('Aguarde...');
 			form.getForm().submit({
 				success: function(f, o){
 					button.setDisabled(false);
 					form.el.unmask();
 					if(o.result){
 						if(o.result.success==true){
-							info(me.avisoText, o.result.msg);
-							
-							if(grid){
+							info('Aviso!', o.result.msg);
+							if(grid && !grid.loadDisabled){
 								grid.store.load();
 							}
+							win.close();
 							
 							if(typeof callbackSuccess == 'function'){
 								callbackSuccess(o.result);
 							}
-							
-							win.close();
-							me.getStoresDependes();
 						}
 					}
 				},
@@ -124,13 +292,13 @@ Ext.define('ShSolutions.controller.Util', {
 					form.el.unmask();
 					switch (action.failureType) {
 						case Ext.form.action.Action.CLIENT_INVALID:
-							info(me.titleErro, me.fieldsInvalidText);
+							info('Falha', 'Campos com valores inválidos');
 							break;
 						case Ext.form.action.Action.CONNECT_FAILURE:
-							info(me.titleErro, me.connectFalhaText);
+							info('Falha', 'Comunicação Ajax Perdida');
 							break;
 						case Ext.form.action.Action.SERVER_INVALID:
-						   info(me.titleErro, action.result.msg);
+						   info('Falha', action.result.msg);
 				    }
 					button.setDisabled(false);
 				    if(typeof callbackFailure == 'function'){
@@ -140,14 +308,14 @@ Ext.define('ShSolutions.controller.Util', {
 			});
 		}
 		else{
-			info(me.titleErro, me.requiredsFieldsText);
+			info('Erro!', 'Existem campos obrigatórios...');
 		}
 	},
 	
-	deleteAjax: function(grid, tabela, params, button, callbackSuccess){
+	deleteAjax: function(tabela, params, button, callbackSuccess){
 		var me = this;
+		tabela = tabela.toLowerCase();
 		button.setDisabled(true);
-		grid.getEl().mask(me.delGridText);
 		Ext.Ajax.request({
 			url: 'server/modulos/'+tabela+'/delete.php',
 			params: params,
@@ -155,105 +323,22 @@ Ext.define('ShSolutions.controller.Util', {
 				var o = Ext.decode(o.responseText);
 				button.setDisabled(false);
 				if(o.success===true){
-					info(me.avisoText, o.msg);
-					grid.store.load();
+					info('Aviso', o.msg);
+					me.getList().store.load();
 					if(typeof callbackSuccess == 'function'){
 						callbackSuccess();
 					}
-					me.getStoresDependes();
 				}
 				else{
-					info(me.titleErro, o.msg);
-					grid.getEl().unmask();
+					info('Aviso', o.msg);
 				}
 			},
 			failure: function(o){
 				button.setDisabled(false);
-				info(me.titleErro, me.server_failure + o.status);
-				grid.getEl().unmask();
+				info('Erro!', 'Falha no Servidor Codigo de erro: ' + o.status);
+				console.info(o);
 			}
 		});
-	},
-	
-    getValuesForm: function(form, win, id, url, callback, combobox){
-    	var me = this;
-		form.el.mask(me.saveFormText);
-
-    	Ext.Ajax.request({
-    		url: url,
-    		params: {
-    			id: id,
-    			action: 'GET_VALUES'
-    		},
-    		success: function(o){
-    			var dados = Ext.decode(o.responseText, true);
-                if(dados==null){
-                	info(me.titleErro, response.responseText);
-                }
-                else if(dados.success==true){
-                	
-					me.processInterval(function(){
-						if(me.disabledCombo==0){
-							form.getForm().setValues(dados.dados);
-							form.el.unmask();
-							if(typeof callback == 'function'){
-								callback();
-							}
-							clearInterval(me.clearInterval);
-							return true;
-						}
-					}, combobox);
-					
-				}
-    			else{
-    				info(me.avisoText, dados.msg);
-
-    				if(dados.logout){
-    					window.location = 'login.php';
-    				}
-    			}
-    			if(form){
-    				form.el.unmask();
-    			}
-    		},
-    		failure: function(o){
-    			var dados = Ext.decode(o.responseText, true);
-                if(dados==null){
-                	info(me.titleErro, response.responseText);
-                }
-                else if(dados.logout){
-    				window.location = 'login.php';
-    			}
-
-    			form.el.unmask();
-    		}
-    	});
-
-    },
-	
-	gridLoad: function(comp){
-		if(!comp.loadDisabled){
-			setTimeout(function(){
-				comp.store.load();
-			},100);
-		}
-	},
-	
-	comboLoad: function(comp){
-		var me = this;
-		if(!comp.loadDisabled){
-			if(typeof comp.callback === 'function'){
-				comp.callback(); 
-			}
-			
-			//if(comp.store.getCount()==0){
-				//comp.store.load();
-				var callback = me.verifyCombo(comp);
-				comp.store.load({
-					callback: callback
-				});
-			//}
-		}
 	},
 	
 	reset: function(button){
@@ -263,8 +348,8 @@ Ext.define('ShSolutions.controller.Util', {
     		}
     	});
     },
-	
-	resetFielter: function(button){
+    
+    resetFielter: function(button){
 		this.getFilterBtn().setText(this.filterText);
     	this.getList().store.proxy.extraParams = {
     		action: 'LIST'
@@ -283,35 +368,10 @@ Ext.define('ShSolutions.controller.Util', {
 	setFielter: function(button){
    		var me = this;
    		var form = me.getFilterForm().getValues();
-		Ext.each(me.getFilterForm().getForm().getFields().items, function(field){
-    		if(field.xtype=='combobox'){
-    			form[field.name+'_nome'] = field.getRawValue();
-    		}
-    	});
     	me.getList().store.proxy.extraParams = form;
     	me.getFilterBtn().setText(this.filteredText);
     	me.getList().store.load();
     	me.getFilterWin().close();
-	},
-	
-	enableButton: function(comp){
-		var id = comp.button_id;
-		if(comp.getValue()!=null){
-			Ext.getCmp(id).setVisible(true);
-		}
-		else{
-			Ext.getCmp(id).setVisible(false);
-		}
-	},
-	
-	getAddWindow: function(button){
-		this.application.getController(button.tabela).add(button);
-	},
-	
-	resetCombo: function(button){
-		var id = button.combo_id;
-		Ext.getCmp(id).reset();
-		button.setVisible(false);
 	},
 	
    	constructor: function (config) {

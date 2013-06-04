@@ -4,22 +4,37 @@ class Paginar{
 	private $page;
 	private $start;
 	private $limit;
+	private $limitMax = '100';
 	private $sort = 'id';
 	private $order = 'asc';
 
-	static function maxLimit($valor, $max=25){
-		if($valor > $max){ return $max; } else{ return $valor; }
-	}
+	//$start = (($page - 1) * $rows);
 	
 	function __construct($post){
 		$this->page = (int) $post['page'];
 		$this->start = (int) $post['start'];
-		$this->limit = (int) self::maxLimit($post['limit']);
+		$this->limit = (int) $this->maxLimit($post['limit']);
 		
 		if( isset($post['sort']) ){
 			$sortJson = json_decode( $post['sort'] );
 			$this->sort = trim(rtrim(addslashes($sortJson[0]->property )));
-			$this->order = trim(rtrim(addslashes( $sortJson[0]->direction )));
+			$this->order = $this->validateDirection($sortJson[0]->direction);
+		}
+	}
+
+	private function maxLimit($valor){
+		if($valor > $this->limitMax){
+			return $this->limitMax;
+		} else{ return $valor;}
+	}
+	
+	private function validateDirection($direction){
+		$defaultDirections = array('ASC','DESC');
+		if( in_array($direction, $defaultDirections) ){
+			return $direction;
+		}
+		else{
+			return $defaultDirections[0];
 		}
 	}
 	
@@ -41,5 +56,9 @@ class Paginar{
 	
 	function getOrder(){
 		return $this->order;
+	}
+	
+	function setLimitMax($valor){
+		$this->limitMax = (int) $valor;
 	}
 }

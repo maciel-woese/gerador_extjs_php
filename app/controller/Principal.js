@@ -1,189 +1,203 @@
-/**
-*	@Autor: Maciel Sousa
-*	@Email: macielcr7@gmail.com
-**/
-
 Ext.define('ShSolutions.controller.Principal', {
     extend: 'Ext.app.Controller',
-
-	views: [
-        'Principal'
+    alias: 'controller.controller_principal',
+	
+    views: [
+        'container.Principal',
+        'email.Edit'
     ],
-    
-    models: [
-    	'ModelImages',
-    	'ModelCombo',
-    	'ModelMenu'
-    ],
-    
-    stores: [
-    	'StoreImages',
-    	'StoreComboFilial',
-    	'TreeStoreMenu'
-    ],
-    
-    init: function(application) {
-        var me = this;
+	
+	sair: 'Sair...',
+	msg_sair: 'Desejar Sair?',
+	
+	init: function(app){
 		this.control({
-            'containerprincipal combobox[id=filial_id_principal]': {
-				render: this.loadCombo,
-				change: this.ajaxCombo
-			},
-            'containerprincipal': {
-				afterrender: this.loadImages
-			},
-			'containerprincipal button[action=altera_senha]': {
-				click: this.alterarSenha
-			},
-            'containerprincipal panel treepanel': {
-                itemclick: this.addTabPanel
+            'view_principal': {
+                afterrender: this.shortcut
+            },
+			'view_principal toolbar button[action=add_panel_center] menu': {
+                click: this.clickMenu
+            },
+            'view_principal toolbar button[action=logout]': {
+            	click: this.logout
             }
 		});
-    },
-	
-	alterarSenha: function(button){
-		var me = this;
-		var id = Ext.decode(decodeURIComponent(getParams('functions.js').response)).id;
-		var win = Ext.getCmp('AddSenhaWin');
-        if(!win) win = Ext.widget('addsenhawin');
-        win.show();
-		Ext.getCmp('id_senha').setValue(id);
 	},
 	
-	ajaxCombo: function(comp){
-		Ext.Ajax.request({
-			url: 'server/modulos/filial/alterar_filial.php',
-			params:{
-				action: 'ALTERAR',
-				id: comp.getValue(),
-				nome: comp.getRawValue()
-			},
-			success: function(o){
-				var o = Ext.decode(o.responseText);
-				if(o.success==true){
-					var e = Ext.ComponentQuery.query('gridpanel', Ext.getCmp('PanelCentral'));
-					for(var i in e){
-						e[i].store.load();
-					}
-				}
+	logout: function(button){
+		Ext.Msg.confirm(this.sair, this.msg_sair, function(btn){
+			if(btn=='yes'){
+				window.location = 'logout.php';
 			}
 		});
 	},
 	
-	loadCombo: function(comp){
-		var usuario = Ext.decode(decodeURIComponent(getParams('functions.js').response));
-		if(parseInt(usuario.filial_id_admin)==1){
-			comp.store.load({
-				callback: function(){
-					if(usuario.filial_id=='0'){
-						comp.setValue(comp.store.getAt(0).get('id'));
-					}
-					else{
-						comp.setValue(usuario.filial_id);
-					}
-				}
-			});
-			comp.setReadOnly(false);
-			comp.setVisible(true);
-		}	
-	},
-	
-	loadImages: function(container){
-		var me = this;
-		Ext.getCmp('PanelCentral').add({
-			  title: 'Inicializar',
-			  layout: {
-				type: 'fit'
-			  },
-			  id: 'images-view',
-			  items: Ext.create('Ext.view.View', {
-				id: 'images-view-view',
-				store: Ext.data.StoreManager.lookup('StoreImages'),
-				tpl: [
-					'<tpl for=".">',
-						'<div class="thumb-wrap" id="{modulo}">',
-						'<div class="thumb"><img src="{src}" title="{descricao}"/></div>',
-						'<span>{shortName}</span></div>',
-					'</tpl>',
-					'<div class="x-clear"></div>'
-				],
-				trackOver: true,
-				overItemCls: 'x-item-over',
-				itemSelector: 'div.thumb-wrap',
-				prepareData: function(data) {
-					Ext.apply(data, {
-						shortName: Ext.util.Format.ellipsis(data.descricao, 10)
-					});
-					return data;
-				},
-				listeners: {
-					itemclick: function(dv, node){
-						var ID = 'listagem_'+node.get('modulo');
-						var TITLE = node.get('descricao');
-						var TABLE = node.get('modulo');
-						
-						var novaAba = Ext.getCmp('PanelCentral').items.findBy(function( aba ){ return aba.id === ID; });
-						if(!novaAba){
-							novaAba = Ext.getCmp('PanelCentral').add({
-								  title	: TITLE,
-								  closable: true,
-								  iconCls: node.get('modulo'),
-								  layout: {
-									type: 'fit'
-								  },
-								  id: ID,
-								  items: {
-									  xtype: TABLE+'list',
-									  border: false
-								  }
-							});
-						}
-						
-						Ext.getCmp('PanelCentral').setActiveTab(ID);
-					}
-				}
-			})
-		});
-		Ext.getCmp('PanelCentral').setActiveTab('images-view');
-		Ext.getCmp('images-view-view').store.load();
-	},
-	
-	addTabPanel: function(view, model){
-		if(model.data.leaf!=true){
-			return true;
-		}
-		if(model.raw.tab!==""){
-			var ID = model.raw.idtemp.toUpperCase();
-			var TITLE = model.raw.text;
-			var TABLE = model.raw.tab.toLowerCase();
-			var tipo = model.raw.tipo;
-			var str = model.raw.tab;
-			
-			if(tipo=='cad'){
-				this.application.getController(str).add(view);
-				return true;
-			}
-			
-			var novaAba = Ext.getCmp('PanelCentral').items.findBy(function( aba ){ return aba.id === ID; });
+	clickMenu: function(menu, item){
+		var me 		 = this;
+		var tabela   = item.tabela.toLowerCase();
+		var action   = item.action;
+		var alias    = tabela+'list';
+		var idGrid   = 'Grid'+item.tabela;
+		var callback = item.callback;
+		var ID 		 = 'LISTAGEM_'+tabela.toUpperCase()+'_TAB';
+		if(action=='list'){
+			var novaAba = Ext.getCmp('TabPanelCentral').items.findBy(function( aba ){ return aba.id === ID; });
 			
 			if(!novaAba){
-				novaAba = Ext.getCmp('PanelCentral').add({
-					  title	: TITLE,
+				novaAba = Ext.getCmp('TabPanelCentral').add({
+					  title	: item.text,
+					  iconCls: item.iconCls,
 					  closable: true,
-					  iconCls: model.raw.iconCls,
 					  layout: {
 						type: 'fit'
 					  },
 					  id: ID,
 					  items: {
-						  xtype: TABLE+'list',
-						  border: false
+						  xtype: alias
 					  }
 				});
 			}
 			
-			Ext.getCmp('PanelCentral').setActiveTab(ID);
+			Ext.getCmp('TabPanelCentral').setActiveTab(ID);
 		}
+		else if(action=='insert'){
+			me.application.getController(item.tabela).add(item);
+		}
+		else if(action=='chart'){
+			var alias    = tabela+'chart';
+			var idGrid   = 'Grid'+item.tabela+'Chart';
+			var ID 		 = 'LISTAGEM_'+tabela.toUpperCase()+'CHART_TAB';
+			var novaAba = Ext.getCmp('TabPanelCentral').items.findBy(function( aba ){ return aba.id === ID; });
+			
+			if(!novaAba){
+				novaAba = Ext.getCmp('TabPanelCentral').add({
+					  title	: item.text,
+					  iconCls: item.iconCls,
+					  closable: true,
+					  layout: {
+						type: 'fit'
+					  },
+					  id: ID,
+					  items: {
+						  xtype: alias
+					  }
+				});
+			}
+			
+			Ext.getCmp('TabPanelCentral').setActiveTab(ID);
+		}
+		
+		if(typeof callback == 'function'){
+			callback();
+		}
+	},
+	
+	shortcut: function(comp){
+		var me = this;
+		shortcut.add('ctrl+r', function(){
+			Ext.getCmp('button_gerador_manual').showMenu();
+		});
+		
+		shortcut.add('ctrl+i', function(){
+			me.clickMenu(comp, Ext.getCmp('menuitem_init_app'));
+		});
+		
+		shortcut.add('ctrl+g', function(){
+			me.clickMenu(comp, Ext.getCmp('menuitem_app_gerada'));
+		});
+		
+		shortcut.add('Ctrl+B', function(){
+			if(!Ext.getCmp('button_info_bugs').isVisible()){
+				Ext.getCmp('button_info_bugs').handler();
+			}
+		});
+		
+		shortcut.add('Shift+V', function(){
+			if(!Ext.getCmp('button_version').isVisible()){
+				Ext.getCmp('button_version').handler();
+			}
+		});
+		
+		shortcut.add('Shift+I', function(){
+			if(Ext.getCmp('button_api').isVisible()){
+				Ext.getCmp('button_api').handler();
+			}
+		});
+		
+		shortcut.add('Shift+X', function(){
+			if(Ext.getCmp('menuitem_about_item').isVisible()){
+				Ext.getCmp('menuitem_about_item').handler();
+			}
+		});
+		
+		shortcut.add('Shift+B', function(){
+			Ext.getCmp('button_about_item').showMenu();
+		});
+		
+		shortcut.add('Shift+L', function(){
+			if(Ext.getCmp('button_api').isVisible()){
+				Ext.getCmp('button_api').handler();
+			}	
+		});
+		
+		shortcut.add('f4', function(){
+			me.logout(comp);
+		});
+		
+		shortcut.add('ctrl+l', function(){
+			if(Ext.getCmp('button_login_banco')){
+				me.application.getController('Gerador').login(Ext.getCmp('button_login_banco'));
+			}
+		});
+		
+		shortcut.add('Shift+t', function(){
+			if((Ext.getCmp('button_select_tabelas')) && (!Ext.getCmp('button_select_tabelas').isDisabled())){
+				me.application.getController('Gerador').selectTabelas(Ext.getCmp('button_select_tabelas'));
+			}
+		});
+		
+		shortcut.add('Shift+P', function(){
+			if((Ext.getCmp('button_prepare_crud')) && (!Ext.getCmp('button_prepare_crud').isDisabled())){
+				me.application.getController('Gerador').prepareCrud(Ext.getCmp('button_prepare_crud'));
+			}
+		});
+		
+		shortcut.add('Shift+S', function(){
+			if((Ext.getCmp('button_sync_crud')) && (!Ext.getCmp('button_sync_crud').isDisabled())){
+				me.application.getController('Gerador').syncCrud(Ext.getCmp('button_sync_crud'));
+			}
+		});
+		
+		shortcut.add('Shift+E', function(){
+			if((Ext.getCmp('button_export_crud')) && (!Ext.getCmp('button_export_crud').isDisabled())){
+				me.application.getController('Gerador').exportCrud(Ext.getCmp('button_export_crud'));
+			}
+		});
+		
+		shortcut.add('Shift+G', function(){
+			if((Ext.getCmp('button_test_crud')) && (!Ext.getCmp('button_test_crud').isDisabled())){
+				me.application.getController('Gerador').testarCrud(Ext.getCmp('button_test_crud'));
+			}
+		});
+		
+		shortcut.add('Alt+L', function(){
+			if((Ext.getCmp('login_banco_login')) && (!Ext.getCmp('login_banco_login').isDisabled())){
+				me.application.getController('Gerador').loginBanco(Ext.getCmp('login_banco_login'));
+			}
+		});
+		
+		shortcut.add('Shift+o', function(){
+			if((Ext.getCmp('button_config_admin'))){
+				Ext.getCmp('button_config_admin').showMenu();
+			}
+		});
+		
+		shortcut.add('Shift+u', function(){
+			if((Ext.getCmp('menuitem_usuarios'))){
+				me.clickMenu(comp, Ext.getCmp('menuitem_usuarios'));
+			}
+		});
+	
 	}
+	
 });
-

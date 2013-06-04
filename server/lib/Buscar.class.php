@@ -1,8 +1,8 @@
 <?php
 class Buscar{
-	public $sql = array();
-	public $arrayExecute = array();
-	public $filtro = 'WHERE';
+	private $sql = array();
+	private $arrayExecute = array();
+	private $filtro = 'WHERE';
 
 	function __construct($boolean=true){
 		if($boolean == false){
@@ -18,15 +18,11 @@ class Buscar{
 		if(count($campoArray) == 2){
 			$campoBanco = $campoArray[1];
 		}
-		
-		if(($valor=='0') or (!empty($valor))){
+			
+		if( !empty($valor) ){
 
 			if($metodo == 'like'){
 				$this->sql[] = "{$campoBanco} LIKE :{$paramCampo}";
-				$this->arrayExecute[':'.$paramCampo] = '%'.$valor.'%';
-			}
-			else if($metodo == 'ilike'){
-				$this->sql[] = "{$campoBanco} ILIKE :{$paramCampo}";
 				$this->arrayExecute[':'.$paramCampo] = '%'.$valor.'%';
 			}
 			else if($metodo == 'date'){
@@ -34,8 +30,8 @@ class Buscar{
 				$this->arrayExecute[':'.$paramCampo] = $valor;
 			}
 			else if($metodo == 'isnull'){
-				$this->sql[] = "{$paramCampo} IS NULL";
-				//$this->arrayExecute[':'.$paramCampo] = $valor;
+				$this->sql[] = "{$campoBanco} IS NULL :{$paramCampo}";
+				$this->arrayExecute[':'.$paramCampo] = $valor;
 			}
 			else if($metodo == 'diff'){
 				$this->sql[] = "{$campoBanco} != :{$paramCampo}";
@@ -51,7 +47,6 @@ class Buscar{
 	function setSql($sql){
 		$this->sql[] = $sql;
 	}
-	
 	function setArrayExecute($paramCampo, $valor){
 		$this->arrayExecute[':'.$paramCampo] = $valor;
 	}

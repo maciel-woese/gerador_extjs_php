@@ -1,61 +1,65 @@
 <?php
-	session_start();
-	header("Content-Type: text/html; charset=utf-8");
+	//session_start();
+	//header("Content-Type: text/html; charset=utf-8");
+	$sistema = "Framework ShSolutions";
+	$versao = "2.3.2";
 
-	$versao = '1.0.2';
-	$build  = '(build 20121118)';
-	$sistema = "Posto De Saude";
-	
-	if(!isset($_SESSION['SESSION_USUARIO'])){
-		header("Location: login.php");
+	require_once('server/lib/Connection.class.php');
+	require_once('server/lib/Usuarios.class.php');
+	$usuarios = new Usuarios();
+
+	if($usuarios->isLogado() === false){
+		header('location: login.php');
+		exit;
 	}
 	else{
-		$model = json_encode(unserialize($_SESSION['MODEL_PERMISSOES']));
-		$usuario = json_encode(unserialize($_SESSION['SESSION_USUARIO']));
+		if(!isset($_SESSION['language'])){
+			$_SESSION['language'] = 'br';
+		}
+		require_once("server/locale/{$_SESSION['language']}.php");
 	}
 	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><? echo "$sistema $versao $build"; ?></title>
-    <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css"/>
-    <link rel="stylesheet" type="text/css" href="resources/css/style.css"/>
+    <title><? echo "{$sistema} {$versao}"; ?></title>
+	<noscript>
+	  <meta http-equiv="Refresh" content="1; url=javascript.html">
+	</noscript>
+    <link rel="stylesheet" href="extjs/resources/css/ext-all.css">
+	<link rel="stylesheet" href="resources/css/style.css">
 </head>
 <body>
 	<div id="loading-mask" style=""></div>
-	<div id="dataview-example" style=""></div>
 	<div id="loading">
-		<div id='loading-indicator' class="loading-indicator">
+		<div class="loading-indicator">
 			<img src="resources/images/loading.gif" style="margin-right:8px;float:left;vertical-align:top;"/>
 			<div id="txt-indicator" style=" padding-top:30px;">
-				<? echo "$sistema $versao $build"; ?><br>
-				<span id="loading-msg">Carregando Styles e Imagens, Aguarde...</span>
+				<? echo "{$sistema} {$versao}"; ?><br>
+				<span id="loading-msg"><?=LOAD_STYLES?></span>
 			</div>
 		</div>
 	</div>
-	
-	<script type="text/javascript">
-		document.getElementById('loading-msg').innerHTML = 'Carregando Framework, Aguarde...';
-		var NameApp = 'ShSolutions';
-		var TITULO_SYSTEM = '<?=$sistema?>';
-		var key = <?=$model?>;
-	</script>
-	<script type="text/javascript" src="ext/ext-all.js"></script>
-	<script type="text/javascript">document.getElementById('loading-msg').innerHTML = 'Carregando Tradutor, Aguarde...';</script>
-	<script type="text/javascript" src="ext/locale/ext-lang-pt_BR.js"></script>
-	<script type="text/javascript">document.getElementById('loading-msg').innerHTML = 'Carregando Plugins, Aguarde...';</script>
-	<script type="text/javascript" src="resources/plugins/Notification.js"></script>
-	<script type="text/javascript" src="resources/plugins/TabCloseMenu.js"></script>
-	<script type="text/javascript" src="resources/plugins/TextMask.js"></script>
-	<script type="text/javascript" src='resources/plugins/functions.js?response=<?=$usuario?>'></script>
-	
-	<script type="text/javascript">
-		var responseUsuario = Ext.decode(decodeURIComponent(getParams('functions.js').response));
-		document.getElementById('loading-msg').innerHTML = 'Carregando M&oacute;dulos, Aguarde...';
-	</script>
-    <script type="text/javascript" src='app.js'></script>
+	<div style="display:none!important;">
+		<iframe width="1" height="1" id="removeOlds" name="removeOlds" src="server/modulos/gerador/delete.php?action=PREPARE_MODEL"></iframe>
+	</div>
 </body>
+
+<script type="text/javascript">document.getElementById('loading-msg').innerHTML = '<?=LOAD_FRAMEWORK?>';</script>
+
+<script src="extjs/ext-all.js"></script>
+<script type="text/javascript">document.getElementById('loading-msg').innerHTML = '<?=LOAD_TRADUTOR?>';</script>
+<script type="text/javascript" src="extjs/locale/ext-lang-<?=$_SESSION['language']?>.js"></script>
+<script type="text/javascript" src="app/locale/ext-lang-<?=$_SESSION['language']?>.js"></script>
+<script type="text/javascript">document.getElementById('loading-msg').innerHTML = '<?=LOAD_PLUGIN?>';</script>
+<script type="text/javascript" src="resources/plugins/Notification.js"></script>
+<script type="text/javascript" src="resources/plugins/TabCloseMenu.js"></script>
+<script type="text/javascript" src="resources/plugins/TextMask.js"></script>
+<script type="text/javascript" src="resources/plugins/Shortcut.js"></script>
+<script type="text/javascript" src="resources/plugins/functions.js"></script>
+<script type="text/javascript">document.getElementById('loading-msg').innerHTML = '<?=LOAD_MODULES?>';</script>
+
+<script type="text/javascript" src="app.js?key=<?=$_SESSION['tipo_usuario']?>&exportar=<?=$_SESSION['exportar_user']?>&id_grupo=<?=$_SESSION['id_grupo_usuario']?>"></script>
 </html>

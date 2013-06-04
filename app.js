@@ -1,57 +1,54 @@
-/**
-*	@Autor: Maciel Sousa
-*	@Email: macielcr7@gmail.com
-**/
 Ext.Loader.setConfig({
-    enabled: true,
-    paths: {
-    	'ShSolutions': 'app',
-    	'ShSolutions.plugins': 'resources/plugins'
-    }
+    enabled : true,
+    paths   : {
+    	ShSolutions : 'app'
+    } 
 });
 
 Ext.application({
+	controllers: [
+	    'Principal',
+	    'Gerador',
+	    'ComboCompile',
+	    'Grupo',
+	    'Usuarios',
+	    'Generated'
+	 ],
+    autoCreateViewport: true,
     name: 'ShSolutions',
-    controllers: [
-		'Agendamento_Exame',		
-		'Agendamento_Transporte',		
-		'Cidades',		
-		'Consulta',		
-		'Entrada_Medicamento',		
-		'Entrada_Produtos',		
-		'Especialidades',		
-		'Estados',		
-		'Filial',		
-		'Fornecedor',		
-		'Laboratorio',		
-		'Medicamento',		
-		'Medico',		
-		'Pacientes',		
-		'Pacientes_Transporte',		
-		'Saida_Medicamento',		
-		'Saida_Produtos',		
-		'Veiculos',		
-		'Principal',		
-		'Perfil',		
-		'Permissoes',		
-		'Usuarios'		
-    ],
-    
-    autoCreateViewport: false,
-	dados: [],
-	
-	launch: function(){
-		var me = this;
-		Ext.widget('containerprincipal').show();
-		
-		me.dados = key;
-
-		Ext.get('loading').hide();
+    launch: function() {
+    	Ext.get('loading').hide();
 		Ext.get('loading-mask').setOpacity(0, true);
+		
 		setTimeout(function(){
 			Ext.get('loading-mask').hide();
-		},400);
-	}
-
+			window.tipo_usuario = getParams('app.js');
+			if(window.tipo_usuario.exportar=='1'){
+				Ext.getCmp('button_version').setVisible(false);
+			}
+			if(window.tipo_usuario.id_grupo!='1'){
+				Ext.getCmp('button_config_admin').destroy();
+			}
+		},800);
+		
+		setInterval(function(){
+			Ext.Ajax.request({
+				url: 'server/modulos/login/list.php',
+				params: {
+					action: 'SET_TEMPO'
+				},
+				success: function(o){
+					var o = Ext.decode(o.responseText);
+					if(o.success==false){
+						Ext.Msg.alert('Error!', o.msg, function(){
+							if((o.logout) && (o.logout==true)){
+								window.location = 'login.php';
+							}
+						});
+					}
+				}
+			});
+		},18000);
+    }
 });
 

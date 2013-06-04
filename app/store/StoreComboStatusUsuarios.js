@@ -20,7 +20,7 @@ Ext.define('ShSolutions.store.StoreComboStatusUsuarios', {
 					descricao: 'Ativo'
 				},				
 				{
-					id: '2',
+					id: '0',
 					descricao: 'Desativado'
 				}				
    	        	

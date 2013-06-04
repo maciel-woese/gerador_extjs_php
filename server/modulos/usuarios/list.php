@@ -28,7 +28,7 @@ if($_POST){
 			
 			$pdo = $connection->prepare("
 				SELECT COUNT(*) as total 
-				FROM usuarios
+				FROM usuarios 
 				WHERE {$_POST['param']} = :valor 
 			");
 			$pdo->bindParam(':valor', $_POST['valor']);
@@ -42,6 +42,7 @@ if($_POST){
 			
 			echo json_encode( array('success'=>$success) );
 		}
+	
 		else{
 			$pag = new Paginar($_POST);
 			
@@ -52,27 +53,19 @@ if($_POST){
 			$order 	= $pag->getOrder();
 			
 			$result = array();
-
-			if($user->filial_id_admin==1 and $user->administrador==false){
-				$buscar->setBusca(array('filial_id', 'usuarios.filial_id'), 0);
-				$buscar->setBusca(array('administrador', 'usuarios.administrador'), 2);
-				$buscar->setBusca(array('id', 'usuarios.id'), $user->id, 'diff');
-			}
-			else if($user->filial_id_admin==0 and $user->administrador==false){
-				$buscar->setBusca(array('filial_id', 'usuarios.filial_id'), $user->filial_id);
-				$buscar->setBusca(array('administrador', 'usuarios.administrador'), 2);
-				$buscar->setBusca(array('id', 'usuarios.id'), $user->id, 'diff');
-			}
 			
 			if(isset($_POST['action']) AND $_POST['action'] == 'FILTER'){
 				$buscar->setBusca(array('nome', 'usuarios.nome'), $_POST['nome'], 'like');
-				$buscar->setBusca(array('perfil_id', 'usuarios.perfil_id'), $_POST['perfil_id']);
+				$buscar->setBusca(array('data_cadastro', 'usuarios.data_cadastro'), implode('-', array_reverse(explode('/', $_POST['data_cadastro']))), 'like');
 				$buscar->setBusca(array('email', 'usuarios.email'), $_POST['email'], 'like');
 				$buscar->setBusca(array('login', 'usuarios.login'), $_POST['login'], 'like');
+				$buscar->setBusca(array('id_grupo', 'usuarios.id_grupo'), $_POST['id_grupo']);
 				$buscar->setBusca(array('status', 'usuarios.status'), $_POST['status'], 'like');
+				$buscar->setBusca(array('exportar', 'usuarios.exportar'), $_POST['exportar'], 'like');
 			}
 			
-			if (isset($_POST['sort'])){
+			if (isset($_POST['sort']))
+			{
 				$sortJson = json_decode( $_POST['sort'] );
 				$sort = trim(rtrim(addslashes($sortJson[0]->property )));
 				$order = trim(rtrim(addslashes( $sortJson[0]->direction )));
@@ -82,8 +75,8 @@ if($_POST){
 			
 			$pdo = $connection->prepare("
 				SELECT count(*) as total 
-				FROM usuarios INNER JOIN perfil ON
-					(usuarios.perfil_id=perfil.id) 
+				FROM usuarios INNER JOIN grupo ON
+					(usuarios.id_grupo=grupo.id) 
 				{$filtro};
 			");
 			$pdo->execute( $buscar->getArrayExecute() );
@@ -93,17 +86,12 @@ if($_POST){
 			$countRow = $query->total;
 			
 			$pdo = $connection->prepare("
-				
-				SELECT usuarios.*, perfil.perfil,
-				if(usuarios.filial_id = '0', 'Todos', filial.filial) as filial
-				FROM usuarios 
-				INNER JOIN perfil ON (usuarios.perfil_id=perfil.id) 
-				LEFT JOIN filial ON  (usuarios.filial_id=filial.id) 
+				SELECT usuarios.*, grupo.grupo 
+				FROM usuarios INNER JOIN grupo ON
+					(usuarios.id_grupo=grupo.id) 
 				{$filtro} 
-				GROUP BY usuarios.id
 				ORDER BY {$sort} {$order} 
-				LIMIT {$start}, {$limit}
-			;
+				LIMIT {$start}, {$limit};
 			");
 			$pdo->execute( $buscar->getArrayExecute() );
 			

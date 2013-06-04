@@ -8,102 +8,94 @@ if($_POST){
 	require('../../autoLoad.php');
 	$tabela = 'usuarios';
 	try {
-		if(isset($_POST['perfil_id'])){
-			$perfil_id = $_POST['perfil_id'];
-		}
-		else{
-			$perfil_id = 2;
-		}
+		
+		$connection->beginTransaction();
 		
 		if($_POST['action'] == 'EDITAR'){
+		
 			$pdo = $connection->prepare("
 					UPDATE usuarios SET 
 							nome = ?,							
-							perfil_id = ?,							
+							data_cadastro = ?,							
 							email = ?,							
-							login = ?,									
-							status = ?							
+							login = ?,							
+							id_grupo = ?,							
+							status = ?,							
+							exportar = ?							
  					WHERE id = ?
 			");
 			$params = array(
 				$_POST['nome'],
-				$perfil_id,
+				implode('-', array_reverse(explode('/', $_POST['data_cadastro']))),
 				$_POST['email'],
 				$_POST['login'],
+				$_POST['id_grupo'],
 				$_POST['status'],
+				$_POST['exportar'],
 				$_POST['id']
 			);
-			$pdo->execute($params);
 		}
 		else if ($_POST['action'] == 'INSERIR'){
+		
 			$pdo = $connection->prepare("
 				INSERT INTO usuarios 
 					(
 						nome,						
-						perfil_id,						
+						data_cadastro,						
 						email,						
 						login,						
-						senha,						
-						administrador,						
-						status,
-						filial_id
+						id_grupo,						
+						status,						
+						exportar						
 					) 
 				VALUES 
 					(
-						?,	?,	?,	?,	?,	'2',  ?,  ?
+						?,	?,	?,	?,	?,	?,	?			
 					)
 			");
-			
 			$params = array(
 				$_POST['nome'],		
-				$perfil_id,
+				implode('-', array_reverse(explode('/', $_POST['data_cadastro']))),		
 				$_POST['email'],		
 				$_POST['login'],		
-				md5($_POST['senha']),		
+				$_POST['id_grupo'],		
 				$_POST['status'],		
-				$user->filial_id
+				$_POST['exportar']		
 			);
-			$pdo->execute($params);
 		}
-		else if ($_POST['action'] == 'ALTERAR_SENHA'){
+		else if ($_POST['action'] == 'EXPORTAR'){
 			$pdo = $connection->prepare("
-					SELECT * FROM usuarios 
- 					WHERE id = ? AND senha = ?
+				UPDATE usuarios SET 
+					exportar = ?							
+				WHERE id = ?
 			");
 			$params = array(
-				$_POST['id'],
-				md5($_POST['senha2'])
+				$_POST['exportar'],
+				$_POST['usuario_id']
 			);
-			$pdo->execute($params);
-			if($pdo->rowCount()>0){
-				$pdo = $connection->prepare("
-						UPDATE usuarios SET 
-							senha = ?
-						WHERE id = ?
-				");
-				$params = array(
-					md5($_POST['senha2']),
-					$_POST['id']
-				);
-				$pdo->execute($params);
-			}
-			else{
-				die(json_encode(array(
-					'success'=>false, 
-					'msg'=>utf8_encode("Senha Atual Não Confere...")
-				)));
-			}
+		}
+		else if ($_POST['action'] == 'STATUS'){
+			$pdo = $connection->prepare("
+				UPDATE usuarios SET 
+					status = ?							
+				WHERE id = ?
+			");
+			$params = array(
+				$_POST['status'],
+				$_POST['usuario_id']
+			);
 		}
 		else{
-			die(json_encode(array(
-				'success'=>false, 
-				'msg'=>utf8_encode("Ação Não Encontrada...")
-			)));
+			throw new PDOException(utf8_encode("Nenhuma Ação Encontrada..."));
 		}
 		
+		$pdo->execute($params);
+		
+		$connection->commit();
 		echo json_encode(array('success'=>true, 'msg'=>'Registro Salvo com Sucesso'));
 	}
 	catch (PDOException $e) {
-		echo json_encode(array('success'=>false, 'msg'=>'Erro ao salvar dados!', 'erro'=>$e->getMessage()));
+		$connection->rollBack();
+		echo json_encode(array('success'=>false, 'msg'=>$e->getMessage()));
 	}
 }

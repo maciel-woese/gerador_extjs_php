@@ -16,7 +16,6 @@ Ext.define('ShSolutions.store.StoreUsuarios', {
             storeId: 'StoreUsuarios',
             model: 'ShSolutions.model.ModelUsuarios',
             remoteSort: true,
-			groupField: 'filial_id',
             sorters: [
             	{
             		direction: 'ASC',

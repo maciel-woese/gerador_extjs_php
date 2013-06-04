@@ -11,7 +11,7 @@ Ext.define('ShSolutions.view.usuarios.Edit', {
     layout: {
         type: 'fit'
     },
-    title: 'Cadastro de Usu&aacute;rios',
+    title: 'Cadastro de Usuarios',
 
     initComponent: function() {
         var me = this;
@@ -46,40 +46,14 @@ Ext.define('ShSolutions.view.usuarios.Edit', {
 									
 								},								
 								{
-		                            xtype: 'fieldcontainer',
-		                            autoHeight: true,
-									disabled: responseUsuario.filial_id_admin == 0 ? false : true,
-								    flex: 1,
-		                            layout: {
-		                                align: 'stretch',
-		                                type: 'hbox'
-		                            },
-		                            items: [
-		                                {
-											xtype: 'combobox',
-		                                    store: 'StoreComboPerfil',
-		                                    name: 'perfil_id',
-											id: 'perfil_id_usuarios',
-											button_id: 'button_perfil_id_usuarios',
-											flex: 1,
-											anchor: '100%',
-											fieldLabel: 'Perfil'
-										},
-		                                {
-		                                    xtype: 'buttonadd',
-		                                    iconCls: 'bt_cancel',
-		                                    hidden: true,
-		                                    id: 'button_perfil_id_usuarios',
-		                                    combo_id: 'perfil_id_usuarios',
-		                                    action: 'reset_combo'
-		                                },
-		                                {
-		                                    xtype: 'buttonadd',
-											tabela: 'Perfil',
-											action: 'add_win'
-		                                }
-		                            ]
-		                        }		                        
+									xtype: 'datefield',
+									format: 'd/m/Y',																		
+									flex: 1,								
+									name: 'data_cadastro',
+									id: 'data_cadastro_usuarios',
+									anchor: '100%',
+									fieldLabel: 'Data Cadastro'
+								}								
 
 							]
 						},
@@ -97,7 +71,27 @@ Ext.define('ShSolutions.view.usuarios.Edit', {
 								    margin: '0 5 0 0',								    
 								    flex: 1,
 									id: 'email_usuarios',
-									anchor: '100%',		
+									anchor: '100%',									enableKeyEvents: true,
+									listeners: {
+										blur: function(obj, event){
+											var v = obj.getValue();
+											Ext.Ajax.request({
+												url: 'server/modulos/usuarios/list.php',
+												method: 'POST',
+												params:{
+													action: 'VALID_UNIQUE',
+													param: 'email',
+													valor: this.getValue()
+												},
+												success: function(s, o){
+													var dados = Ext.decode(s.responseText);
+													if(dados.success==false){
+														Ext.getCmp('email_usuarios').markInvalid('Usuário Ja Existe...');
+													}
+												}
+											});
+										}
+									},		
 									validator: function(value){
 										if(value!="" && !isEmail(value)){
 											return 'E-mail Inválido...';
@@ -114,35 +108,29 @@ Ext.define('ShSolutions.view.usuarios.Edit', {
 									name: 'login',								    								    
 								    flex: 1,
 									id: 'login_usuarios',
-									anchor: '100%',									
-									fieldLabel: 'Login',
-									enableKeyEvents: true,
+									anchor: '100%',									enableKeyEvents: true,
 									listeners: {
 										blur: function(obj, event){
 											var v = obj.getValue();
-											Ext.getCmp('login_usuarios').up('form').el.mask('Aguarde...');
 											Ext.Ajax.request({
 												url: 'server/modulos/usuarios/list.php',
 												method: 'POST',
 												params:{
 													action: 'VALID_UNIQUE',
 													param: 'login',
-													valor: v
+													valor: this.getValue()
 												},
 												success: function(s, o){
 													var dados = Ext.decode(s.responseText);
-													Ext.getCmp('login_usuarios').up('form').el.unmask();
 													if(dados.success==false){
-														Ext.getCmp('login_usuarios').markInvalid('LOGIN Ja Existe...');
+														Ext.getCmp('login_usuarios').markInvalid('Usuário Ja Existe...');
 													}
-												},
-												failure: function(s, o){
-													console.info(s);
-													Ext.getCmp('login_usuarios').up('form').el.unmask();
 												}
 											});
 										}
-									}
+									},									
+									fieldLabel: 'Login'
+									
 								}								
 
 							]
@@ -156,15 +144,39 @@ Ext.define('ShSolutions.view.usuarios.Edit', {
 							},
 							items: [
 								{
-									xtype: 'textfield',
-									name: 'senha',									
+		                            xtype: 'fieldcontainer',
+		                            autoHeight: true,								    
 								    margin: '0 5 0 0',								    
 								    flex: 1,
-									id: 'senha_usuarios',
-									anchor: '100%',				
-									inputType: 'password',									
-									fieldLabel: 'Senha'
-								},
+		                            layout: {
+		                                align: 'stretch',
+		                                type: 'hbox'
+		                            },
+		                            items: [
+		                                {
+											xtype: 'combobox',
+		                                    store: 'StoreComboGrupo',
+		                                    name: 'id_grupo',
+											id: 'id_grupo_usuarios',
+											button_id: 'button_id_grupo_usuarios',
+											flex: 1,
+											anchor: '100%',											fieldLabel: 'Grupo'
+										},
+		                                {
+		                                    xtype: 'buttonadd',
+		                                    iconCls: 'bt_cancel',
+		                                    hidden: true,
+		                                    id: 'button_id_grupo_usuarios',
+		                                    combo_id: 'id_grupo_usuarios',
+		                                    action: 'reset_combo'
+		                                },
+		                                {
+		                                    xtype: 'buttonadd',
+											tabela: 'Grupo',
+											action: 'add_win'
+		                                }
+		                            ]
+		                        },		                        
 								{
 		                            xtype: 'fieldcontainer',
 		                            autoHeight: true,								    								    
@@ -182,8 +194,7 @@ Ext.define('ShSolutions.view.usuarios.Edit', {
 											id: 'status_usuarios',
 											button_id: 'button_status_usuarios',
 											flex: 1,
-											anchor: '100%',
-											fieldLabel: 'Status'
+											anchor: '100%',											fieldLabel: 'Status'
 										},
 		                                {
 		                                    xtype: 'buttonadd',
@@ -194,7 +205,50 @@ Ext.define('ShSolutions.view.usuarios.Edit', {
 		                                    action: 'reset_combo'
 		                                }
 		                            ]
-								}
+		                        }
+
+							]
+						},
+						{
+							xtype: 'fieldcontainer',
+							autoHeight: true,
+							anchor: '50%',
+							margins: '0 5 0 0',
+							layout: {
+								align: 'stretch',
+								type: 'hbox'
+							},
+							items: [
+								{
+		                            xtype: 'fieldcontainer',
+		                            autoHeight: true,								    								    
+								    flex: 1,
+		                            layout: {
+		                                align: 'stretch',
+		                                type: 'hbox'
+		                            },
+		                            items: [
+		                                {
+											xtype: 'combobox',
+		                                    store: 'StoreComboExportarUsuarios',
+		                                    name: 'exportar',
+											loadDisabled: true,
+											id: 'exportar_usuarios',
+											button_id: 'button_exportar_usuarios',
+											flex: 1,
+											anchor: '100%',											fieldLabel: 'Exportar'
+										},
+		                                {
+		                                    xtype: 'buttonadd',
+		                                    iconCls: 'bt_cancel',
+		                                    hidden: true,
+		                                    id: 'button_exportar_usuarios',
+		                                    combo_id: 'exportar_usuarios',
+		                                    action: 'reset_combo'
+		                                }
+		                            ]
+		                        }
+
 							]
 						},
 						{

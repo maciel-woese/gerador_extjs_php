@@ -8,8 +8,7 @@ Ext.define('ShSolutions.model.ModelComboLocal', {
 
 	fields: [
 		{
-			name: 'id',
-			type: 'auto'
+			name: 'id'
 		},
 		{
 			name: 'descricao',

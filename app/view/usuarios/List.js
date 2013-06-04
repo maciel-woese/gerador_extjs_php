@@ -24,72 +24,96 @@ Ext.define('ShSolutions.view.usuarios.List', {
 					if(record.get('status')=='1'){
 						return '';
 					}
-					else if(record.get('status')=='2'){
+					else if(record.get('status')=='0'){
 						return 'amarelo';
 					}
 				}
 			},
-			features: [
-                {
-                    ftype: 'grouping',
-					disabled: responseUsuario.administrador == true ? false : true,
-                    enableGroupingMenu: false,
-                    groupHeaderTpl: 'Filial: {[values.rows[0].data.filial]}, ({rows.length} Usuario{[values.rows.length > 1 ? "s" : ""]})'
-                }
-            ],
-			forceFit: true,			
+			//forceFit: true,
 			columns: [
 				{
 					xtype: 'numbercolumn',
 					dataIndex: 'id',
-					hidden: true,
 					format: '0',
-					text: 'Id',
+					text: 'Id',					
+					flex: 1,
 					width: 140
 				},
 				{
 					xtype: 'gridcolumn',
 					dataIndex: 'nome',
-					text: 'Nome',
+					text: 'Nome',					
+					flex: 1,
 					width: 140
 				},
 				{
-					xtype: 'gridcolumn',
-					dataIndex: 'perfil',
-					text: 'Perfil',
-					width: 140
-				},
-				{
-					xtype: 'numbercolumn',
-					dataIndex: 'perfil_id',
-					hidden: true,
-					format: '0',
-					text: 'Perfil',
+					xtype: 'datecolumn',
+					dataIndex: 'data_cadastro',
+					format: 'd/m/Y',
+					renderer : Ext.util.Format.dateRenderer('d/m/Y'),
+					text: 'Data Cadastro',					
+					flex: 1,
 					width: 140
 				},
 				{
 					xtype: 'gridcolumn',
 					dataIndex: 'email',
-					text: 'Email',
+					text: 'Email',					
+					flex: 2,
 					width: 140
 				},
 				{
 					xtype: 'gridcolumn',
 					dataIndex: 'login',
-					text: 'Login',
+					text: 'Login',					
+					flex: 1,
+					width: 140
+				},
+				{
+					xtype: 'gridcolumn',
+					dataIndex: 'grupo',
+					text: 'Grupo',					
+					flex: 1,
+					width: 140
+				},
+				{
+					xtype: 'numbercolumn',
+					dataIndex: 'id_grupo',
+					hidden: true,
+					format: '0',
+					text: 'Grupo',					
 					width: 140
 				},
 				{
 					xtype: 'gridcolumn',
 					dataIndex: 'status',
-					text: 'Status',
+					text: 'Status',					
+					flex: 1,
 					renderer: function(v){
 						switch(v){
 							case '1':
-							return 'Ativo';
+							return '<span style="color:blue;">Ativo</span>';
 						  	break;
-							case '2':
-							return 'Desativado';
+							case '0':
+							return '<span style="color:red;">Desativado</span>';
+						  	break;
+ 					
+						}
+					},
+					width: 140
+				},
+				{
+					xtype: 'gridcolumn',
+					dataIndex: 'exportar',
+					text: 'Exportar',					
+					flex: 1,
+					renderer: function(v){
+						switch(v){
+							case '1':
+							return '<span style="color:blue;">Sim</span>';
+						  	break;
+							case '0':
+							return '<span style="color:red;">Não</span>';
 						  	break;
  					
 						}
@@ -113,33 +137,23 @@ Ext.define('ShSolutions.view.usuarios.List', {
 							xtype: 'button',
 							id: 'button_add_usuarios',
 							iconCls: 'bt_add',
-							hidden: true,
+							
 							action: 'adicionar',
 							text: 'Adicionar'
 						},
 						{
 							xtype: 'button',
 							id: 'button_edit_usuarios',
-							iconCls: 'bt_edit',
-							hidden: true,
+							iconCls: 'bt_edit',							
 							action: 'editar',
 							text: 'Editar'
 						},
 						{
 							xtype: 'button',
 							id: 'button_del_usuarios',
-							iconCls: 'bt_del',
-							hidden: true,
+							iconCls: 'bt_del',							
 							action: 'deletar',
 							text: 'Deletar'
-						},
-						{
-							xtype: 'button',
-							id: 'button_modulos_usuarios',
-							iconCls: 'modulo',
-							hidden: true,
-							action: 'modulos',
-							text: 'Add/Rem. M&oacute;dulos'
 						},
 						{
 							xtype: 'button',
@@ -147,6 +161,27 @@ Ext.define('ShSolutions.view.usuarios.List', {
 							iconCls: 'bt_lupa',
 							action: 'filtrar',
 							text: 'Filtrar'
+						},
+						{
+							xtype: 'button',
+							id: 'button_sql_usuarios',
+							iconCls: 'acao',
+							action: 'sql',
+							text: 'SQL Exec.'
+						},
+						{
+							xtype: 'button',
+							id: 'button_export_usuarios',
+							iconCls: 'acao',
+							action: 'export',
+							text: 'Exportar S/N'
+						},
+						{
+							xtype: 'button',
+							id: 'button_status_list_usuarios',
+							iconCls: 'acao',
+							action: 'status',
+							text: 'Ativo S/N'
 						}
 					]
 				}

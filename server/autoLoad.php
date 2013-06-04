@@ -1,13 +1,17 @@
 <?php
-
+session_start();
 require_once('../../lib/Connection.class.php');
-require_once('../../lib/Buscar.class.php');
-require_once('../../lib/Paginar.class.php');
-require_once('../../lib/funcoes.php');
 require_once('../../lib/Usuarios.class.php');
-$user = new Usuarios();
-if(!$user->isLogado()){
-	die(json_encode(array('success'=> false, 'logout'=> true)));
+
+$usuarios = new Usuarios();
+
+if($usuarios->isLogado() === false){
+	echo json_encode(array('success'=>false,'logout'=>true));
+	exit;
 }
+require_once("../../locale/{$_SESSION['language']}.php");
+require_once('../../lib/Paginar.class.php');
+require_once('../../lib/Buscar.class.php');
+
 $connection = new Connection;
 ?>
