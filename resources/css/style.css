@@ -1,0 +1,153 @@
+@charset "utf-8";
+/* CSS Document */
+
+	<!--
+		a{color:#083772;text-decoration:none;}
+		a:hover{color:#0464bb;}
+		*{padding: 0;margin: 0;font-family: Tahoma, Geneva, sans-serif;font-size: 11px;}
+		body{-webkit-font-smoothing:antialiased;font:11px / 1.231 HelveticaNeue,helvetica,arial,clean,sans-serif;color:#484848}
+		
+		.amarelo .x-grid-cell{background-color: #FF9;}
+		.red_text .x-grid-cell{color: red;}
+		
+		.x-tab-icon {
+			position: absolute;
+			background-repeat: no-repeat;
+			background-position: 0 -1px;
+			top: 0;
+			left: 0;
+			right: auto;
+			bottom: 0;
+			width: 18px;
+			margin: -2px 0 0 -2px !important;
+			height: 18px;
+		}
+		
+		.buttonFilter{color: blue;}
+		.bt_add{background:url("../images/add.png") no-repeat}
+		.bt_reset{background:url("../images/information.png") no-repeat 3px}
+		.bt_edit{background:url("../images/edit.png") no-repeat}
+		.bt_del{background:url("../images/delete.gif") no-repeat}
+		.bt_pdf{background:url("../images/pdf.png") no-repeat}
+        .bt_login{background:url("../images/connect.png") no-repeat}
+		.bt_save{background:url("../images/save.png") no-repeat}
+		.bt_cancel, .bt_close{background:url("../images/cross.gif") no-repeat}
+		.information{background-image:url('../images/information.png') !important;}
+		.acao{background: url('../images/acao.png') center no-repeat !important;}
+		.modulo{background: url('../images/modulo.png') no-repeat center !important;}
+		.config{background: url('../images/config.png') no-repeat !important;}
+		.cad{background: url('../images/cad.png') no-repeat center !important;}
+		.grid{background: url('../images/grid.png') no-repeat !important;}
+		.logout{background:url("../images/disconnect.png") no-repeat !important;}
+		.pass{background:url("../images/key.png") no-repeat center !important;}
+		.bt_refresh{background:url("../images/refresh.gif") no-repeat !important;}
+		.bt_lupa{background:url("../images/lupa.png") no-repeat}
+
+		.consulta{background: url('../images/consulta.png') no-repeat center !important;}
+		.filial{background: url('../images/filial.png') no-repeat center !important;}
+		.medico{background: url('../images/medico.png') no-repeat center !important;}
+		.veiculos{background: url('../images/veiculos.png') no-repeat center !important;}
+		.medicamento{background: url('../images/medicamento.png') no-repeat center !important;}
+		.laboratorio{background: url('../images/laboratorio.png') no-repeat center !important;}
+		.saida_medicamento{background: url('../images/saida_medicamento.png') no-repeat center !important;}
+		.entrada_medicamento{background: url('../images/entrada_medicamento.png') no-repeat center !important;}
+		.agendamento_exame{background: url('../images/agendamento_exame.png') no-repeat center !important;}
+		.agendamento_transporte{background: url('../images/agendamento_transporte.png') no-repeat center !important;}
+		.especialidades{background: url('../images/especialidades.png') no-repeat center !important;}
+		.fornecedor{background: url('../images/fornecedor.png') no-repeat center !important;}
+		.pacientes{background: url('../images/pacientes.png') no-repeat center !important;}
+		.perfil{background: url('../images/perfil.png') no-repeat center !important;}
+		.usuarios{background: url('../images/usuarios.png') no-repeat center !important;}
+		.cidades{background: url('../images/cidades.png') no-repeat center !important;}
+		.estados{background: url('../images/estados.png') no-repeat center !important;}
+		
+		.x-form-empty-field{color: black!important;}
+		.ext-ie .x-fieldset{padding-top:5px !important;}
+
+		#loading-mask{background-color:white;height:100%;position:absolute;left:0;top:0;width:100%;z-index:40000;}
+		#loading{
+			height:auto;
+			position:absolute;
+			width:520px;
+			left:35%;
+			top:40%;
+			z-index:40001;
+		}
+		#loading a {color:#225588;}
+		#loading .loading-indicator{background:white;color:#444;font:bold 13px Helvetica, Arial, sans-serif;height:auto;margin:0;padding:10px;}
+		#loading-msg {font-size: 10px;font-weight: normal;}
+	-->
+
+	
+#images-view .x-panel-body{
+    background: white;
+    font: 11px Arial, Helvetica, sans-serif;
+}
+#images-view .thumb{
+    background: #dddddd;
+    padding: 3px;
+}
+
+.x-quirks #images-view .thumb {
+    padding-bottom: 3px;
+}
+
+#images-view .thumb img{
+    height: 48px;
+    width: 48px;
+	cursor: pointer;
+}
+#images-view .thumb-wrap{
+    float: left;
+    margin: 4px;
+    margin-right: 0;
+    padding: 5px;
+}
+#images-view .thumb-wrap span {
+    
+    display: block;
+    overflow: hidden;
+    text-align: center;
+    width: 52px; /* for ie to ensure that the text is centered */
+}
+
+#images-view .x-item-over{
+    border:1px solid #dddddd;
+    background: #efefef url(../images/over.gif) repeat-x left top;
+    padding: 4px;
+}
+
+#images-view .x-item-selected{
+    background: #eff5fb url(../images/selected.gif) no-repeat right bottom;
+    border:1px solid #99bbe8;
+    padding: 4px;
+}
+#images-view .x-item-selected .thumb{
+    background:transparent;
+}
+
+#images-view .loading-indicator {
+    font-size:11px;
+    background-image:url('ext/resources/themes/images/default/grid/loading.gif');
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left:20px;
+    margin:10px;
+}
+
+.x-view-selector {
+    position:absolute;
+    left:0;
+    top:0;
+    width:0;
+    border:1px dotted;
+    opacity: .5;
+    -moz-opacity: .5;
+    filter:alpha(opacity=50);
+    zoom:1;
+    background-color:#c3daf9;
+    border-color:#3399bb;
+}.ext-strict .ext-ie .x-tree .x-panel-bwrap{
+    position:relative;
+    overflow:hidden;
+}
