@@ -1,0 +1,82 @@
+$sair = 'Sair';
+$button_back = 'Voltar';
+$load_more = 'Carregar mais...';
+$no_records = 'N&atilde;o &agrave; mais registros';
+
+$view_desktop = 'Mostrar Area de trabalho';
+$title_preferences = 'Preferências';
+$tree_auto_run = 'Inicialização automática';
+$tree_quick_start = 'Inicialização rapida';
+$tree_icon_desktop = 'Icones área de trabalho';
+$tree_start_menu = 'Menu Iniciar';
+
+index.php
+	$locale = 'br';
+	$loading_msg_style = 'Carregando Styles e Imagens, Aguarde...';
+	$loading_msg_framework = 'Carregando Framework, Aguarde...';
+	$loading_msg_tradutor = 'Carregando Tradutor, Aguarde...';
+	$loading_msg_plugins = 'Carregando Plugins, Aguarde...';
+	$loading_msg_modulos = 'Carregando M&oacute;dulos, Aguarde...';
+	
+filter.js
+	$title_filter = 'Filtro de';
+	$button_reset_filtro = 'Resetar Filtro';
+	$button_filtrar = 'Filtrar';
+
+list.js	
+	$button_adicionar = 'Adicionar';
+	$button_editar = 'Editar';
+	$button_deletar = 'Deletar';
+	$button_pdf = 'Gerar PDF';
+	
+login.js
+	$title_login = 'Login do Sistema';
+	$login_login = 'Login';
+	$password_login = 'Senha';
+	$reset_form = 'Resetar';
+	$button_connect = 'Conectar';
+	$aguarde = 'Aguarde...';
+	$error = 'Erro!';
+	
+principal.js
+	$title_menu = 'Módulos';
+	$confirm = 'Confirmar';
+	$sair_sistema = 'Deseja Sair do Sistema?';
+	
+edit.js
+	$title_window = 'Cadastro de';
+	$button_save = 'Salvar';
+	
+store.js
+	$store_load_data = 'Aguarde Carregando Dados...';
+
+controller.js
+	$title_window_edit = 'Edi&ccedil;&atilde;o de';
+	$delete_msg = 'Deseja deletar';
+	$aviso = 'Aviso!';
+	$delete_aguarde = 'Deletando, Aguarde...';
+	$select_delete = 'Selecione um Registro para Deletar!';
+	$select_edit = 'Selecione um Registro para Editar!';
+	$ajax_lost = 'Comunica&ccedil;&atilde;oo Ajax Perdida';
+	$fields_invalids = 'Campos com valores invalidos';
+	$exist_fields_requireds = 'Existem campos obrigatorios...';
+	$server_failure = 'Falha no Servidor Codigo de erro: ';
+	
+menu.json
+	$menu_list = 'Listagem de';
+	$menu_cad = 'Cadastro de';
+	
+Usuarios.php
+	$login_required = 'Login e Senha obrigatórios!';
+	$user_bloq = 'Usuário bloqueado!';
+	$user_incorrect = 'Usuário e senha incorretos!';
+	$permissoes_insuf = 'Permissões Insuficientes!';
+	$perfil_menu = 'Perfil';
+	$user_menu = 'Usuários';
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,30 @@
+<?php
+	define('EMAIL_INVALIDO', "Email Inválido");
+	define('EMAIL_ENVIADO', "Email Enviado");
+	
+	define('ACAO_NAO_ENCONTRADA', "Ação não encontrada...");
+	define('ARQUIVO_NAO_EXISTE', "Arquivo Não Existe!");
+	define('ERRO_LOAD_CLASSE', "Erro ao carregar a classe...");
+	define('ERRO_ZIP_FILE', "Error ao zipar arquivo!");
+	
+	define('REMOVIDO', 'Removido com sucesso');
+	define('SALVO', 'Salvo com sucesso');
+	
+	define('MES_1', 'Janeiro');
+	define('MES_2', 'Fevereiro');
+	define('MES_3', 'Março');
+	define('MES_4', 'Abril');
+	define('MES_5', 'Maio');
+	define('MES_6', 'Junho');
+	define('MES_7', 'Julho');
+	define('MES_8', 'Agosto');
+	define('MES_9', 'Setembro');
+	define('MES_10', 'Outubro');
+	define('MES_11', 'Novembro');
+	define('MES_12', 'Dezembro');
+	
+	define('APP_GERADA', "Aplicação Gerada!");
+	define('APP_ERRO_GERAR', "Erro ao Gerar Aplicação!");
+	define('NO_SERVER_CONNECT', 'Unable to connect with the Server!');
+	define('NO_DATABASE_CONNECT', 'Could not connect to the DataBase!');
+?>
