@@ -7,13 +7,13 @@ Seus códigos PHP e Ext JS ou Touch são gerados automaticamente a partir do ban
 
 Lista de Características.
 * Gerando Aplicações em 3 Layouts!.
-1 - Padrão (http://www.shsolutions.com.br/demo/padrao/).
-2 - Desktop (http://www.shsolutions.com.br/demo/desktop/).
-3 - Touch (http://www.shsolutions.com.br/demo/touch/).
+  	* - Padrão (http://www.shsolutions.com.br/demo/padrao/).
+	* - Desktop (http://www.shsolutions.com.br/demo/desktop/).
+	* - Touch (http://www.shsolutions.com.br/demo/touch/).
 
 * Suporte aos Banco de Dados:
-1 - Mysql.
-2 - PostgreSql.
+	* - Mysql.
+	* - PostgreSql.
 * Gerar PDF, Listar, Editar, Deletar, Filtrar, Implementa Mascaras (CPF, CNPJ, CEP, TELEFONE, MONEY).
 * Gera Permissões e Autenticação de Usuários.
 
