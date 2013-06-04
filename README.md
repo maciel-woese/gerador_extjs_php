@@ -1,4 +1,4 @@
-gerador_extjs_php
+Gerador Extjs PHP
 =================
 
 Gerador Automático de Aplicações em Extjs4, Touch + PHP
