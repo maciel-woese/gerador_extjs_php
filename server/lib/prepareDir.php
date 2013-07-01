@@ -114,6 +114,10 @@
 				if(!mkdir($this->root.$this->id_usuario)){
 					return false;
 				}
+				else{
+					chmod($this->root.$this->id_usuario, 0777);
+				}
+
 			}
 			
 			if($this->vazio($this->root.$this->id_usuario)){
