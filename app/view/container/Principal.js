@@ -113,7 +113,7 @@ Ext.define('ShSolutions.view.container.Principal', {
 											Ext.Msg.alert(me.infoAlert.desenvolvido_por, ''+
 											'<b>'+me.infoAlert.desenvolvedor+'</b> Maciel Sousa<br>'+
 											'<b>'+me.infoAlert.email+'</b> macielcr7@gmail.com<br>'+
-											'<b>'+me.infoAlert.telefone+'</b> +55 (85) 8571-4337');
+											'<b>'+me.infoAlert.telefone+'</b> +55 (85) 8516-6042');
 										},
 										text: me.item_sobre
 									},

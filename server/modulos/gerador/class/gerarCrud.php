@@ -240,9 +240,6 @@ class ExtMVC {
 						'store'=> "{$campo}{$tabela}"
 					);
 				}
-				else if(){
-					
-				}
 				else{
 					if($a[$i]['xtypeWindow']=='combo'){
 						$tabela = $this->app->arquivo->setUpperTabela($a[$i]['combo']);

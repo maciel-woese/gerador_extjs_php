@@ -1,4 +1,7 @@
 <?php
+	error_reporting(E_ALL); 
+ 	ini_set("display_errors", 1); 
+
 	class App {
 		public $smarty  = null;
 		public $arquivo = null;
@@ -13,12 +16,19 @@
 			if($this->smarty==null){
 				$this->smarty 	= $smarty;
 			}
+			
+			$this->smarty->debugging = true;
+
 			$this->tabela	= $tabela; 
 			$this->dados 	= $dados;
 			$this->arquivo  = $arquivo;
 			$arquivo->init($this->dirApp, $this->tabela);
 			
 			$_SESSION['caminho_project'] = $this->dirApp;
+			
+			if (!is_writable('../') and !@chmod('../', 0777)){
+				die(json_encode(array('success' => false, 'msg'=> PLEASE_PERMISSION)));
+			}
 		}
 		
 		
@@ -378,8 +388,7 @@
 			else{
 				$this->smarty->assign('form', $this->dados['form']);
 				return $this->smarty->fetch($this->dirTpl . 'view/filtro.tpl');
-			}
-			
+			}			
 		}
 		
 		/**

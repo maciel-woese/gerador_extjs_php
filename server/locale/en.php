@@ -13,6 +13,7 @@ define('EMAIL_INVALID', "Email Invalid");
 define('ACTION_NOT_FOUND', "Action not found...");
 define('REMOVED', "Successfully removed");
 define('SALVED', "Successfully Saved");
+define('PLEASE_PERMISSION', "Please Allow Writing on Project Folder!");
 
 define('MSG_EMAIL_1', "To confirm your registration visit the link: <br>");
 define('MSG_EMAIL_2', "Click to Enable Register");

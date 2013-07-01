@@ -13,6 +13,8 @@ define('EMAIL_INVALID', "Email Inválido");
 define('ACTION_NOT_FOUND', "Ação não encontrada...");
 define('REMOVED', "Removido com sucesso");
 define('SALVED', "Salvo com sucesso");
+define('PLEASE_PERMISSION', "Por Favor De Permissoes de Escrita na Pasta do Projeto!");
+
 
 define('MSG_EMAIL_1', "Para confirmar seu cadastro acesse o link: <br>");
 define('MSG_EMAIL_2', "Clique para Ativar Cadastro");
