@@ -23,45 +23,78 @@
 			$dir = $this->dirApp;
 			$tabela = $this->setUpperTabela($this->tabela);
 			if($campo!=false) $campo = $this->setUpperTabela($campo);
+
+			if(!file_exists($dir.'app/view')){
+				mkdir($dir.'app/view');
+				@chmod($dir.'app/view', 0777);
+			}
+			if(!file_exists($dir.'app/controller')){
+				mkdir($dir.'app/controller');
+				@chmod($dir.'app/controller', 0777);
+			}
+			if(!file_exists($dir.'app/model')){
+				mkdir($dir.'app/model');
+				@chmod($dir.'app/model', 0777);
+			}
+			if(!file_exists($dir.'app/store')){
+				mkdir($dir.'app/store');
+				@chmod($dir.'app/store', 0777);
+			}
+			if(!file_exists($dir.'server/modulos')){
+				mkdir($dir.'server/modulos');
+				@chmod($dir.'server/modulos', 0777);
+			}
+			if(!file_exists($dir.'server/lib')){
+				mkdir($dir.'server/lib');
+				@chmod($dir.'server/lib', 0777);
+			}
+
 			if($type=='window'){
 				if(!file_exists($dir.'app/view/'.$this->tabela)){
 					mkdir($dir.'app/view/'.$this->tabela);
+					@chmod($dir.'app/view/'.$this->tabela, 0777);
 				}
 				$file = $dir."app/view/".$this->tabela."/Edit.js";
 			}
 			else if($type=='filtro'){
 				if(!file_exists($dir.'app/view/'.$this->tabela)){
 					mkdir($dir.'app/view/'.$this->tabela);
+					@chmod($dir.'app/view/'.$this->tabela, 0777);
 				}
 				$file = $dir."app/view/".$this->tabela."/Filtro.js";
 			}
 			else if($type=='grid'){
 				if(!file_exists($dir.'app/view/'.$this->tabela)){
 					mkdir($dir.'app/view/'.$this->tabela);
+					@chmod($dir.'app/view/'.$this->tabela, 0777);
 				}
 				$file = $dir."app/view/".$this->tabela."/List.js";
 			}
 			else if($type=='list'){
 				if(!file_exists($dir.'server/modulos/'.$this->tabela)){
 					mkdir($dir.'server/modulos/'.$this->tabela);
+					@chmod($dir.'server/modulos/'.$this->tabela, 0777);
 				}
 				$file = $dir."server/modulos/".$this->tabela."/list.php";
 			}
 			else if($type=='save'){
 				if(!file_exists($dir.'server/modulos/'.$this->tabela)){
 					mkdir($dir.'server/modulos/'.$this->tabela);
+					@chmod($dir.'server/modulos/'.$this->tabela, 0777);
 				}
 				$file = $dir."server/modulos/".$this->tabela."/save.php";
 			}
 			else if($type=='delete'){
 				if(!file_exists($dir.'server/modulos/'.$this->tabela)){
 					mkdir($dir.'server/modulos/'.$this->tabela);
+					@chmod($dir.'server/modulos/'.$this->tabela, 0777);
 				}
 				$file = $dir."server/modulos/".$this->tabela."/delete.php";
 			}
 			else if($type=='pdf'){
 				if(!file_exists($dir.'server/modulos/'.$this->tabela)){
 					mkdir($dir.'server/modulos/'.$this->tabela);
+					@chmod($dir.'server/modulos/'.$this->tabela, 0777);
 				}
 				$file = $dir."server/modulos/".$this->tabela."/pdf.php";
 			}

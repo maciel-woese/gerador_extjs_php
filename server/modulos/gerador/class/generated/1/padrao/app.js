@@ -13,9 +13,11 @@ Ext.Loader.setConfig({
 Ext.application({
     name: 'ShSolutions',
     controllers: [
+		'Categoria',		
+		'Contato',		
 		'Perfil',		
-		'Principal',		
 		'Permissoes',		
+		'Principal',		
 		'Usuarios'		
     ],
     
@@ -26,7 +28,7 @@ Ext.application({
 		var me = this;
 		Ext.widget('containerprincipal').show();
 			
-		me.dados = key;
+		me.dados = Ext.decode(decodeURIComponent(getParams('app.js').key));
 
 		Ext.get('loading').hide();
 		Ext.get('loading-mask').setOpacity(0, true);

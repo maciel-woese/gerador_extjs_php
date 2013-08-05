@@ -43,11 +43,15 @@
 		
 		function copyModel($source, $dest){
 			if (is_file($source)) {
-				return copy($source, $dest);
+				 $copy = copy($source, $dest);
+				 @chmod($source, 0777);
+				 @chmod($dest, 0777);
+				 return $copy;
 			}
 			
 			if (!is_dir($dest)) {
 				mkdir($dest);
+				@chmod($dest, 0777);
 			}
 			
 			$dir = dir($source);

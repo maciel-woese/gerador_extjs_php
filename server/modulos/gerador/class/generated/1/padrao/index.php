@@ -3,8 +3,8 @@
 	header("Content-Type: text/html; charset=utf-8");
 
 	$versao = '1.0.1';
-	$build  = '(build 20130701)';
-	$sistema = "Asa";
+	$build  = '(build 20121029)';
+	$sistema = "Oo";
 	
 	if(!isset($_SESSION['SESSION_USUARIO'])){
 		header("Location: login.php");
@@ -38,19 +38,19 @@
 	<script type="text/javascript">
 		document.getElementById('loading-msg').innerHTML = 'Carregando Framework, Aguarde...';
 		var NameApp = 'ShSolutions';
-		var TITULO_SYSTEM = '<?=$sistema?>';
-		var key = <?=$model?>;
+		var TITULO_SYSTEM = "<?=$sistema?>";
 	</script>
 	<script type="text/javascript" src="ext/ext-all.js"></script>
 	<script type="text/javascript">document.getElementById('loading-msg').innerHTML = 'Carregando Tradutor, Aguarde...';</script>
 	<script type="text/javascript" src="ext/locale/ext-lang-pt_BR.js"></script>
 	<script type="text/javascript">document.getElementById('loading-msg').innerHTML = 'Carregando Plugins, Aguarde...';</script>
+
 	<script type="text/javascript" src="resources/plugins/Notification.js"></script>
 	<script type="text/javascript" src="resources/plugins/TabCloseMenu.js"></script>
 	<script type="text/javascript" src="resources/plugins/TextMask.js"></script>
 	<script type="text/javascript" src="resources/plugins/functions.js"></script>
 
 	<script type="text/javascript">document.getElementById('loading-msg').innerHTML = 'Carregando M&oacute;dulos, Aguarde...';</script>
-    <script type="text/javascript" src='app.js'></script>
+    <script type="text/javascript" src='app.js?key=<?=$model?>'></script>
 </body>
 </html>

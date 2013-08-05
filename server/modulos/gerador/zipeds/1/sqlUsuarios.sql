@@ -11,10 +11,12 @@ CREATE TABLE `modulos` (
 
 INSERT INTO `modulos` (`id`, `modulo`,`descricao`) VALUES 
  
- (1, 'perfil',	'Perfil'),
+ (1, 'especialidades',	'Especialidades'),
  
- (2, 'perfil',		'Perfil'),
- (3, 'usuarios',	'Usuarios');
+ (2, 'estados',	'Estados'),
+ 
+ (3, 'perfil',		'Perfil'),
+ (4, 'usuarios',	'Usuarios');
  
  
 DROP TABLE IF EXISTS `modulos_acoes`;
@@ -36,18 +38,23 @@ INSERT INTO `modulos_acoes` (`acao`,`modulo_id`, `acao_desc`) VALUES
  ('adicionar', 	1, 'Adicionar'),
  ('editar', 	1, 'Editar'),
  ('deletar', 	1, 'Deletar'),
-  	
+  
  ('listar', 	2, 'Listar'),
  ('adicionar', 	2, 'Adicionar'),
  ('editar', 	2, 'Editar'),
  ('deletar', 	2, 'Deletar'),
- ('modulos',	2,	'Add. Modulos'),
- 
+  	
  ('listar', 	3, 'Listar'),
  ('adicionar', 	3, 'Adicionar'),
  ('editar', 	3, 'Editar'),
  ('deletar', 	3, 'Deletar'),
- ('modulos',	3,	'Add. Modulos');
+ ('modulos',	3,	'Add. Modulos'),
+ 
+ ('listar', 	4, 'Listar'),
+ ('adicionar', 	4, 'Adicionar'),
+ ('editar', 	4, 'Editar'),
+ ('deletar', 	4, 'Deletar'),
+ ('modulos',	4,	'Add. Modulos');
  
 DROP TABLE IF EXISTS `perfil`;
 CREATE TABLE `perfil` (
