@@ -124,7 +124,7 @@
 						}
 					}
 					$f = implode('_', $r);
-					rename($f, $file);
+					@rename($f, $file);
 				}
 			}
 			
