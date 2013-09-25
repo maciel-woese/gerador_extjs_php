@@ -18,13 +18,17 @@
 		}
 		require_once("server/locale/{$_SESSION['language']}.php");
 	}
+
+	if (!is_writable('./') and !@chmod('./', 0777)){
+		die(json_encode(array('success' => false, 'msg'=> PLEASE_PERMISSION)));
+	}
 	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><? echo "{$sistema} {$versao}"; ?></title>
+    <title><?php echo "{$sistema} {$versao}"; ?></title>
 	<noscript>
 	  <meta http-equiv="Refresh" content="1; url=javascript.html">
 	</noscript>

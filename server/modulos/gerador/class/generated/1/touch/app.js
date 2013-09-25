@@ -15,14 +15,9 @@ Ext.application({
         114: 'resources/icons/icon-114.png'
     },
     dados: [],
-	
-    name: 'ShSolutions',
+	name: 'ShSolutions',
     controllers: [
-		'Product',		
-		'User',		
-		'Verification',		
-		'Principal',		
-		'Verification_Products'		
+		'Principal'	
     ],
 	
 	launch: function(){
@@ -32,6 +27,8 @@ Ext.application({
 			fullscreen: true
 		});
 		init.getStore().load();
+			
+		me.dados = Ext.decode(decodeURIComponent(getParams('app.js').key));
 		
 	}
 
