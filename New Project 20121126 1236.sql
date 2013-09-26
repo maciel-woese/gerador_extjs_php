@@ -100,7 +100,7 @@ CREATE TABLE `usuarios` (
 
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 INSERT INTO `usuarios` (`id`,`nome`,`data_cadastro`,`email`,`login`,`senha`,`id_grupo`,`status`,`tempo`,`exportar`) VALUES 
- (1,'Maciel','2012-10-30','macielcr7@gmail.com','macielcr7','b35fe674cb18fb2004fcf091a253d9ca',1,'1','1353944210','1'),
+ (1,'Maciel','2012-10-30','macielcr7@gmail.com','admin','21232f297a57a5a743894a0e4a801fc3',1,'1','1353944210','1'),
  (2,'Demo','2012-10-30','demo@demo.com','demo','fe01ce2a7fbac8fafaed7c982a04e229',2,'1','0','0'),
  (3,'Sousa','2012-10-30','sousa.justa@gmail.com','sousa','0c8b7fff469703da5e219f1c807a2153',1,'1','0','0'),
  (12,'macielc.ronaldo','2012-11-19','macielc.ronaldo@hotmail.com','macielc.ronaldo','b35fe674cb18fb2004fcf091a253d9ca',2,'0','0','0');

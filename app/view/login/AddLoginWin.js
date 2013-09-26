@@ -43,6 +43,7 @@ Ext.define('ShSolutions.view.login.AddLoginWin', {
                             id: 'LoginLogin',
                             name: 'login_user',
                             fieldLabel: 'Login',
+			    value: 'admin',
                             allowBlank: false,
                             labelWidth: 60,
                             anchor: '100%'
@@ -53,6 +54,7 @@ Ext.define('ShSolutions.view.login.AddLoginWin', {
                             inputType: 'password',
                             name: 'senha_user',
                             fieldLabel: 'Senha',
+			    value: 'admin',
                             labelWidth: 60,
                             allowBlank: false,
                             anchor: '100%'
@@ -60,7 +62,8 @@ Ext.define('ShSolutions.view.login.AddLoginWin', {
 						{
                             xtype: 'radiogroup',
                             id: 'LocaleLogin',
-							labelWidth: 60,
+							
+			    labelWidth: 60,
                             fieldLabel: 'Traduzir',
                             items: [
                                 {
