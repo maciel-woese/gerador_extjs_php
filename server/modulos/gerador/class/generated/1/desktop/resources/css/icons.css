@@ -3,27 +3,107 @@
 *	@Email: macielcr7@gmail.com
 **/
 /*SHORTCUT*/
-	.categoria-shortcut {
-		background-image: url(../images/categoria48x48.png);
+	.clientes-shortcut {
+		background-image: url(../images/list48x48.png);
 	}
-	.contato-shortcut {
-		background-image: url(../images/contato48x48.png);
+	.clientes_anotacoes-shortcut {
+		background-image: url(../images/list48x48.png);
 	}
-
+	.clientes_contato-shortcut {
+		background-image: url(../images/list48x48.png);
+	}
+	.clientes_endereco-shortcut {
+		background-image: url(../images/list48x48.png);
+	}
+	.correios_bairros-shortcut {
+		background-image: url(../images/list48x48.png);
+	}
+	.correios_cidades-shortcut {
+		background-image: url(../images/list48x48.png);
+	}
+	.correios_enderecos-shortcut {
+		background-image: url(../images/list48x48.png);
+	}
+	.correios_estados-shortcut {
+		background-image: url(../images/list48x48.png);
+	}
+	.perfil-shortcut {
+		background-image: url(../images/list48x48.png);
+	}
+	.usuarios-shortcut {
+		background-image: url(../images/list48x48.png);
+	}
+	
 /*SHORTCUT IE6*/
-	.x-ie6 .categoria-shortcut {
+	.x-ie6 .clientes-shortcut {
 		background-image: none;
-		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/categoria48x48.png', sizingMethod='scale');
+		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/list48x48.png', sizingMethod='scale');
 	}	
-	.x-ie6 .contato-shortcut {
+	.x-ie6 .clientes_anotacoes-shortcut {
 		background-image: none;
-		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/contato48x48.png', sizingMethod='scale');
+		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/list48x48.png', sizingMethod='scale');
 	}	
-
-/*ICON-GRID*/
-	.categoria {
-		background-image: url( ../images/categoria16x16.png ) !important;
+	.x-ie6 .clientes_contato-shortcut {
+		background-image: none;
+		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/list48x48.png', sizingMethod='scale');
+	}	
+	.x-ie6 .clientes_endereco-shortcut {
+		background-image: none;
+		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/list48x48.png', sizingMethod='scale');
+	}	
+	.x-ie6 .correios_bairros-shortcut {
+		background-image: none;
+		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/list48x48.png', sizingMethod='scale');
+	}	
+	.x-ie6 .correios_cidades-shortcut {
+		background-image: none;
+		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/list48x48.png', sizingMethod='scale');
+	}	
+	.x-ie6 .correios_enderecos-shortcut {
+		background-image: none;
+		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/list48x48.png', sizingMethod='scale');
+	}	
+	.x-ie6 .correios_estados-shortcut {
+		background-image: none;
+		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/list48x48.png', sizingMethod='scale');
+	}	
+	.x-ie6 .perfil-shortcut {
+		background-image: none;
+		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/list48x48.png', sizingMethod='scale');
 	}
-	.contato {
-		background-image: url( ../images/contato16x16.png ) !important;
+	.x-ie6 .usuarios-shortcut {
+		background-image: none;
+		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/list48x48.png', sizingMethod='scale');
+	}
+	
+/*ICON-GRID*/
+	.clientes {
+		background-image: url( ../images/list16x16.png ) !important;
+	}
+	.clientes_anotacoes {
+		background-image: url( ../images/list16x16.png ) !important;
+	}
+	.clientes_contato {
+		background-image: url( ../images/list16x16.png ) !important;
+	}
+	.clientes_endereco {
+		background-image: url( ../images/list16x16.png ) !important;
+	}
+	.correios_bairros {
+		background-image: url( ../images/list16x16.png ) !important;
+	}
+	.correios_cidades {
+		background-image: url( ../images/list16x16.png ) !important;
+	}
+	.correios_enderecos {
+		background-image: url( ../images/list16x16.png ) !important;
+	}
+	.correios_estados {
+		background-image: url( ../images/list16x16.png ) !important;
+	}
+	.perfil {
+		background-image: url( ../images/list16x16.png ) !important;
+	}
+	.usuarios {
+		background-image: url( ../images/list16x16.png ) !important;
 	}

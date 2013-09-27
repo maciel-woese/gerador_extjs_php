@@ -13,7 +13,8 @@ Ext.Loader.setConfig({
 Ext.application({
     name: 'ShSolutions',
     controllers: [
-		'Desktop'		
+		'Desktop'
+		
     ],
     autoCreateViewport: false,
     winRegistered: new Ext.util.MixedCollection(),
@@ -21,7 +22,7 @@ Ext.application({
     	var me = this;
     	Ext.create('ShSolutions.view.Desktop');
 			
-		me.dados = Ext.decode(decodeURIComponent(getParams('app.js').key));
+		me.dados = key;
     }
 
 });

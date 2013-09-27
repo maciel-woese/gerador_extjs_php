@@ -18,9 +18,9 @@ if($_POST){
 		$json = '{"dados": ['.$_POST['json'].']}';
 		$foreign = '{"dados": ['.$_POST['foreign'].']}';
 	
-		$arq = fopen('bkps/'.$_SESSION['HOST_SERVER'].'-'.$_SESSION['USER_SERVER'].'-'.$_SESSION['DATABASE_SERVER'].'-backupJson.json',"w");
-		fwrite($arq, $json);
-		fclose($arq);
+		$arq = @fopen('bkps/'.$_SESSION['HOST_SERVER'].'-'.$_SESSION['USER_SERVER'].'-'.$_SESSION['DATABASE_SERVER'].'-backupJson.json',"w");
+		@fwrite($arq, $json);
+		@fclose($arq);
 		
 		$z = new banco($_SESSION['HOST_SERVER'], $_SESSION['USER_SERVER'], $_SESSION['PASS_SERVER'], $_SESSION['DATABASE_SERVER']);
 		
@@ -64,7 +64,9 @@ if($_POST){
 			if($p==0){
 				require_once("../../lib/zip.lib.php");
 				$nome_project = md5(date(time()));
-				
+				if(!file_exists("zipeds")){
+					mkdir("zipeds");
+				}
 				if(!file_exists("zipeds/{$_SESSION['id_usuario']}")){
 					mkdir("zipeds/{$_SESSION['id_usuario']}");
 				}
