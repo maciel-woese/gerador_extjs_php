@@ -66,9 +66,11 @@ if($_POST){
 				$nome_project = md5(date(time()));
 				if(!file_exists("zipeds")){
 					mkdir("zipeds");
+					@chmod("zipeds", 0777);
 				}
 				if(!file_exists("zipeds/{$_SESSION['id_usuario']}")){
 					mkdir("zipeds/{$_SESSION['id_usuario']}");
+					@chmod("zipeds/{$_SESSION['id_usuario']}", 0777);
 				}
 				
 				$archive = new PclZip("zipeds/{$_SESSION['id_usuario']}/{$nome_project}.zip");
