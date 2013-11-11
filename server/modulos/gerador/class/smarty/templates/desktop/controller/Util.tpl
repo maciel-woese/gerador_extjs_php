@@ -71,27 +71,38 @@ Ext.define('{$app|capitalize}.controller.Util', {
 		else if(me.getFilterForm()){
 			var form = me.getFilterForm(); 
 		}
-		if(comp.xtype=='combobox'){
-			if(me.disabledCombo==0){
-				form.el.mask(me.saveFormText);
+		if(comp.xtype=='combobox' && !comp.loadDisabled){
+			if(me.disabledCombo==false){
 				setTimeout(function(){
-					form.el.mask(me.saveFormText);
+					if(comp.store.getCount()==0){
+						form.el.mask(me.saveFormText);
+					}
 				},10);
+				me.disabledCombo = 0;
 			}
-			me.disabledCombo++;
+			if(comp.store.getCount()==0){
+				me.disabledCombo++;
+			}
 			callback = function(){
 				me.disabledCombo--;
 				if(me.disabledCombo==0){
 					if(form){
 						form.el.unmask();
-						
+						setTimeout(function(){
+							if(form){
+								form.el.unmask();
+							}
+						}, 300);
+
 						if(typeof callbackParse == 'function'){
 							callbackParse();
 						}
+						me.disabledCombo = 0;
 					}
 				}
 			}
 		}
+
 		return callback;
 	},
 	

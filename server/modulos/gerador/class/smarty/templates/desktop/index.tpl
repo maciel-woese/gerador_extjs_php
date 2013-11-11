@@ -19,7 +19,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><? echo "$sistema $versao $build"; ?></title>
+    <title><?php echo "$sistema $versao $build"; ?></title>
     <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css"/>
 	<link rel="stylesheet" type="text/css" href="resources/css/desktop.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/icons.css"/>
@@ -32,7 +32,7 @@
 		<div id='loading-indicator' class="loading-indicator">
 			<img src="resources/images/loading.gif" style="margin-right:8px;float:left;vertical-align:top;"/>
 			<div id="txt-indicator" style=" padding-top:30px;">
-				<? echo "$sistema $versao $build"; ?><br>
+				<?php echo "$sistema $versao $build"; ?><br>
 				<span id="loading-msg">{$loading_msg_style}</span>
 			</div>
 		</div>
@@ -41,7 +41,7 @@
 	<script type="text/javascript">
 		document.getElementById('loading-msg').innerHTML = '{$loading_msg_framework}';
 		var NameApp = '{$app|capitalize}';
-		var TITULO_SYSTEM = '<?=$sistema?>';
+		var TITULO_SYSTEM = '<?php echo $sistema?>';
 {if $permissoes=='sim'}
 		var key = <?=$model?>;
 {/if}

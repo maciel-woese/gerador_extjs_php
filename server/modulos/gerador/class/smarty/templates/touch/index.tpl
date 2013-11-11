@@ -19,7 +19,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><? echo "$sistema $versao $build"; ?></title>
+    <title><?php echo "$sistema $versao $build"; ?></title>
     <link rel="stylesheet" href="touch/resources/css/sencha-touch.css">
 	<link rel="stylesheet" href="resources/css/style.css">
 	<script src="touch/sencha-touch-all.js"></script>
